@@ -1,0 +1,3485 @@
+<!DOCTYPE html>
+<html lang="en" Cross-Origin-Embedder-Policy: require-corp>
+<head>
+  <meta charset="UTF-8">
+  <title>Chess Repertoire</title>
+<style>
+.piece { position: absolute; width: 96px; height: 96px; margin: 0px 0px 0px 0px }
+.xpiece { position: absolute; width: 64px; height: 64px; margin: 0px 0px 0px 0px }
+.source { position: absolute; width: 96px; height: 96px; background-color: #000080;  opacity: 0.2; z-index: 0 }
+.xsource { position: absolute; width: 64px; height: 64px; background-color: #000080;  opacity: 0.2; z-index: 0 }
+.destination { position: absolute; width: 96px; height: 96px; background-color: #A08080;  opacity: 0.2; z-index: 0 }
+.xdestination { position: absolute; width: 64px; height: 64px; background-color: #A08080;  opacity: 0.2; z-index: 0 }
+
+.p_a8 { left: 33px;  top: 33px; } .p_b8 { left: 130px;  top: 33px; } .p_c8 { left: 227px; top: 33px; } .p_d8 { left: 323px; top: 33px; }
+.p_e8 { left: 420px; top: 33px; } .p_f8 { left: 517px; top: 33px; } .p_g8 { left: 613px; top: 33px; } .p_h8 { left: 710px; top: 33px; }
+
+.p_a7 { left: 33px;  top: 130px; } .p_b7 { left: 130px;  top: 130px; } .p_c7 { left: 227px; top: 130px; } .p_d7 { left: 323px; top: 130px; }
+.p_e7 { left: 420px; top: 130px; } .p_f7 { left: 517px; top: 130px; } .p_g7 { left: 613px; top: 130px; } .p_h7 { left: 710px; top: 130px; }
+
+.p_a6 { left: 33px;  top: 226px; } .p_b6 { left: 130px;  top: 226px; } .p_c6 { left: 227px; top: 226px; } .p_d6 { left: 323px; top: 226px; }
+.p_e6 { left: 420px; top: 226px; } .p_f6 { left: 517px; top: 226px; } .p_g6 { left: 613px; top: 226px; } .p_h6 { left: 710px; top: 226px; }
+
+.p_a5 { left: 33px;  top: 323px; } .p_b5 { left: 130px;  top: 323px; } .p_c5 { left: 227px; top: 323px; } .p_d5 { left: 323px; top: 323px; }
+.p_e5 { left: 420px; top: 323px; } .p_f5 { left: 517px; top: 323px; } .p_g5 { left: 613px; top: 323px; } .p_h5 { left: 710px; top: 323px; }
+
+.p_a4 { left: 33px;  top: 420px; } .p_b4 { left: 130px;  top: 420px; } .p_c4 { left: 227px; top: 420px; } .p_d4 { left: 323px; top: 420px; }
+.p_e4 { left: 420px; top: 420px; } .p_f4 { left: 517px; top: 420px; } .p_g4 { left: 613px; top: 420px; } .p_h4 { left: 710px; top: 420px; }
+
+.p_a3 { left: 33px;  top: 517px; } .p_b3 { left: 130px;  top: 517px; } .p_c3 { left: 227px; top: 517px; } .p_d3 { left: 323px; top: 517px; }
+.p_e3 { left: 420px; top: 517px; } .p_f3 { left: 517px; top: 517px; } .p_g3 { left: 613px; top: 517px; } .p_h3 { left: 710px; top: 517px; }
+
+.p_a2 { left: 33px;  top: 615px; } .p_b2 { left: 130px;  top: 615px; } .p_c2 { left: 227px; top: 615px; } .p_d2 { left: 323px; top: 615px; }
+.p_e2 { left: 420px; top: 615px; } .p_f2 { left: 517px; top: 615px; } .p_g2 { left: 613px; top: 615px; } .p_h2 { left: 710px; top: 615px; }
+
+.p_a1 { left: 33px;  top: 710px; } .p_b1 { left: 130px;  top: 710px; } .p_c1 { left: 227px; top: 710px; } .p_d1 { left: 323px; top: 710px; }
+.p_e1 { left: 420px; top: 710px; } .p_f1 { left: 517px; top: 710px; } .p_g1 { left: 613px; top: 710px; } .p_h1 { left: 710px; top: 710px; }
+
+.px_a8 { left: 22px;  top: 21px; } .px_b8 { left: 85px;  top: 21px; } .px_c8 { left: 148px; top: 21px; } .px_d8 { left: 212px; top: 21px; }
+.px_e8 { left: 275px; top: 21px; } .px_f8 { left: 338px; top: 21px; } .px_g8 { left: 402px; top: 21px; } .px_h8 { left: 465px; top: 21px; }
+
+.px_a7 { left: 22px;  top: 85px; } .px_b7 { left: 85px;  top: 85px; } .px_c7 { left: 148px; top: 85px; } .px_d7 { left: 212px; top: 85px; }
+.px_e7 { left: 275px; top: 85px; } .px_f7 { left: 338px; top: 85px; } .px_g7 { left: 402px; top: 85px; } .px_h7 { left: 465px; top: 85px; }
+
+.px_a6 { left: 22px;  top: 148px; } .px_b6 { left: 85px;  top: 148px; } .px_c6 { left: 148px; top: 148px; } .px_d6 { left: 212px; top: 148px; }
+.px_e6 { left: 275px; top: 148px; } .px_f6 { left: 338px; top: 148px; } .px_g6 { left: 402px; top: 148px; } .px_h6 { left: 465px; top: 148px; }
+
+.px_a5 { left: 22px;  top: 212px; } .px_b5 { left: 85px;  top: 212px; } .px_c5 { left: 148px; top: 212px; } .px_d5 { left: 212px; top: 212px; }
+.px_e5 { left: 275px; top: 212px; } .px_f5 { left: 338px; top: 212px; } .px_g5 { left: 402px; top: 212px; } .px_h5 { left: 465px; top: 212px; }
+
+.px_a4 { left: 22px;  top: 276px; } .px_b4 { left: 85px;  top: 276px; } .px_c4 { left: 148px; top: 276px; } .px_d4 { left: 212px; top: 276px; }
+.px_e4 { left: 275px; top: 275px; } .px_f4 { left: 338px; top: 276px; } .px_g4 { left: 402px; top: 276px; } .px_h4 { left: 465px; top: 276px; }
+
+.px_a3 { left: 22px;  top: 339px; } .px_b3 { left: 85px;  top: 339px; } .px_c3 { left: 148px; top: 339px; } .px_d3 { left: 212px; top: 339px; }
+.px_e3 { left: 275px; top: 339px; } .px_f3 { left: 338px; top: 339px; } .px_g3 { left: 402px; top: 339px; } .px_h3 { left: 465px; top: 339px; }
+
+.px_a2 { left: 22px;  top: 402px; } .px_b2 { left: 85px;  top: 402px; } .px_c2 { left: 148px; top: 402px; } .px_d2 { left: 212px; top: 402px; }
+.px_e2 { left: 275px; top: 402px; } .px_f2 { left: 338px; top: 402px; } .px_g2 { left: 402px; top: 402px; } .px_h2 { left: 465px; top: 402px; }
+
+.px_a1 { left: 22px;  top: 465px; } .px_b1 { left: 85px;  top: 465px; } .px_c1 { left: 148px; top: 465px; } .px_d1 { left: 212px; top: 465px; }
+.px_e1 { left: 275px; top: 465px; } .px_f1 { left: 338px; top: 465px; } .px_g1 { left: 402px; top: 465px; } .px_h1 { left: 465px; top: 465px; }
+
+.chessdiv { position: absolute; top: 10px; left: 240px; width: 850px; height: 1180px; background-color: #FFFFFF }
+.chessboard { position: absolute; top: 90px; left: 0px;  margin: 2px 2px 2px 2px; }
+.chessxboard { position: absolute; top: 90px; left: 0px; width: 551px; height: 551px;  margin: 2px 2px 2px 2px}
+.chessboardimg { position: absolute; top: 0px; left: 0px; width: 840px; height: 840px;  }
+.chessxboardimg { position: absolute; top: 0px; left: 0px; width: 551px; height: 551px; }
+.chessheader { position: absolute; top: 0px; left: 0px; border: 1px solid #ABABAB; width: 840px; height: 85px;
+               font-family: Helvetica, Sans-Seriv; font-size: 10pt; }
+.chessxside0 { position: absolute; top: 90px; left: 842px; border: 1px solid #848484; width: 2px; height: 838px }
+.chessside0 { position: absolute; top: 91px; left: 553px; border: 1px solid #848484; width: 2px; height: 549px }
+.chessrate  { position: absolute; top: 0px; left: 0px; width: 100%; height: 50%; background-color: #404040 }
+.chessside1 { position: absolute; top: 90px; left: 580px; border: 1px solid #ABABAB; width: 190px; height: 200px; background-color: #EFEFEF }
+.chessside2 { position: absolute; top: 300px; left: 580px; border: 1px solid #ABABAB; width: 190px; height: 180px; background-color: #EFEFEF }
+.chessside3 { position: absolute; top: 500px; left: 580px; border: 1px solid #ABABAB; width: 190px; height: 110px; background-color: #EFEFEF }
+.chesslisting { position: absolute; top: 650px; left: 0px; border: 1px solid #ABABAB; width: 840px; height: 275px }
+.chessfooter { position: absolute; top: 935px; left: 0px; border: 1px solid #ABABAB; width: 840px; height: 240px; 
+               font-family: Helvetica, Sans-Serif; font-size: 10pt; font-weight: bold }
+.chesspiece  { font-weight: bold; font-size: 14pt; margin: 5px 5px 5px 5px; }
+.chesspiecestep { color: #00AA44; font-weight: normal }
+.chesspiecemove { color: #FFFFFF; background-color: #288BA8;  cursor: pointer }
+.chesspiecenomove { color: #440000; cursor: pointer }
+.chesscmt { color: #FF0000; font-weight: normal }
+.chesstrcurrent { background-color: #afafaf; width: 840px; }
+.chesstr { margin: 0px 0px 0px 0px; border: 2px solid #ff00ff; width: 840px; }
+.chesstdp { margin: 3px 3px 3px 3px; border: 1px solid #aaaaaa; width: 180px; }
+.chesstde { margin: 3px 3px 3px 3px; border: 1px solid #aaaaaa; width: 220px; }
+.chesstce { margin: 3px 3px 3px 3px; border: 1px solid #aaaaaa; width: 20px; }
+.chesstdr { margin: 3px 3px 3px 3px; border: 1px solid #aaaaaa; width: 60px; }
+.chesstdl { margin: 3px 3px 3px 3px; border: 1px solid #aaaaaa; width: 20px; }
+.chesstdb { margin: 3px 3px 3px 3px; border: 1px solid #aaaaaa; width: 10px; }
+.chessbutton { margin: 5px 5px 5px 5px }
+.chessbutton1 { margin: 1px 0px 1px 0px }
+.player { font-weight: bold; color: #1255b3;  }
+.playerelo { font-weight: bold; color: #E83845;  }
+.gresult { color: #880000; font-weight: bold }
+.opening { font-weight: normal; color: #000000;  }
+.variation { font-weight: normal; color: #000000;  }
+</style>
+<link rel="shortcut icon" href="images/favicon.ico">
+</head>
+<body style="background-color: #000000">
+<div id="chessdiv" class="chessdiv"> <div id="chessboard" class="chessboard"></div> 
+<div id="chessheader" class="chessheader"><div style="margin: 5px 5px 5px 5px">
+ <div style="position: absolute;  width: 830px; height: 75px; top: 5px; left: 5px">
+ <span id="currentgameid" class="player" style="cursor: pointer" onclick="showGame(this)"></span>
+  <span id="wplayer" class="player">Home Player</span> <span id="whiteelo" class="playerelo">(1800)</span></span> - <span id="bplayer" class="player">Guest Player</span> 
+  <span id="blackelo" class="playerelo">(1800)</span> <span id="resultid" class="gresult">1/2-1/2</span> <br>
+  <span style="font-weight: bold"></span> <span id="eventid" class="variation">Event</span> (<span id="dateid" class="player">Date</span>)<br>
+  <span style="font-weight: bold"></span><span id="ecoid" class="player">ECO</span>: <span id="openingid" class="opening">Opening</span> 
+  <span style="font-weight: bold"></span> - <span id="variationid" class="variation">Variation</span><br>
+ </div>
+ <div style="position:absolute; top: 0px; left: 820px;" ><span style="font-size: 24pt; font-weight: bold; color: #000000" id="sidetomoveid" >&#9675;</span></div>
+
+<div id="messagedivid" style="visibility: hidden;  margin: 0px 0px 0px 0px">
+ <div style="position: absolute; top: 350px; left: 140px; width: 460px; height: 40px; 
+        border: 1px solid #000000; background-color: #DEDEDE; margin: 0px 0px 0px 0px; zIndex: 10;">
+        <span id="messageid" style="position: absolute; margin: 10px 10px 10px 10px"></span>
+ </div>
+</div>
+
+<div id="analysisid" style="visibility: hidden;  margin: 0px 0px 0px 0px">
+ <div style="position: absolute; top: 350px; left: 140px; width: 460px; height: 70px; 
+        border: 1px solid #000000; background-color: #DEDEDE; margin: 0px 0px 0px 0px; zIndex: 10;">
+<input id="fenid" type="text" style="zIndex: 30; margin: 10px 10px 0px 10px" size=64 maxlength=64 
+    placeholder="FEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQKq - 0 1" list="fenName" />
+<datalist id="fenName">
+  <option value="8/6P2/8/8/5K2/7k/8/8 w - - 0 1"></option>
+  <option value="8/8/7K/8/5k2/8/6p2/8 b - - 0 1"></option>
+  <option value="RNBKQBNR/PPPPPPPP/8/8/8/8/pppppppp/rnbkqbnr w KQkq - 0 1"></option>
+  <option value="RNBKQBNR/PPPPPPPP/8/8/8/8/pppppppp/rPbkqbnr w KQkq - 0 1"></option>
+  <option value="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQKq - 0 1"></option>
+  <option value="rnbqkb1r/ppp1pppp/3p1n2/8/4P3/5N2/PPPPBPPP/RNBQK2R b KQKq - 0 1"></option>
+  <option value="8/5P2/8/8/K7/7k/8/8 w - - 0 1"></option>
+  <option value="8/8/8/8/k7/7K/4p3/8 b - - 0 1"></option>
+  <option value="1nb5/8/8/8/3K4/k7/8/8 w - - 0 1"></option>
+  <option value="k7/8/2K5/8/8/8/8/8 w - - 0 1"></option>
+  <option value="4k3/8/8/8/8/8/8/4K3 w - - 0 1"></option>
+  <option value="1nb5/8/8/2k6/8/4K3/8/8 w - - 0 1"></option>
+</datalist>
+<br>
+  <button onclick="analyzeGame()"  style="font-size: 12pt; margin: 5px 0px 5px 10px" alt="Play" title="Play">Analyze</button>
+  <button onclick="cancelAnalysis()" style="font-size: 12pt" alt="Cancel" title="Cancel">Cancel</button>
+
+ </div>
+</div>
+
+<div id="promoteid" style="visibility: hidden;  margin: 0px 0px 0px 0px">
+ <div style="position: absolute; top: 400px; left: 250px; width: 300px; height: 100px; 
+        border: 1px solid #000000; background-color: #DEDEDE; margin: 0px 0px 0px 0px; zIndex: 10;">
+  <div style="font-size: 50px; position: absolute; top: 10px; left: 25px; visibility: hidden " id="blackpromotionid" > 
+         <span onclick="promotePiece('Q')" style="cursor: pointer; zIndex: 20; border: 1px solid #ababab">&#9819;</span>
+         <span onclick="promotePiece('R')" style="cursor: pointer; zIndex: 20; border: 1px solid #ababab">&#9820;</span>
+         <span onclick="promotePiece('B')" style="cursor: pointer; zIndex: 20; border: 1px solid #ababab">&#9821;</span>
+         <span onclick="promotePiece('N')" style="cursor: pointer; zIndex: 20; border: 1px solid #ababab">&#9822;</span>
+  </div>
+  <div style="font-size: 50px; position: absolute; top: 10px; left: 25px; visibility: hidden" id="whitepromotionid">
+         <span onclick="promotePiece('Q')" style="cursor: pointer; zIndex: 20; border: 1px solid #ababab">&#9813;</span>
+         <span onclick="promotePiece('R')" style="cursor: pointer; zIndex: 20; border: 1px solid #ababab">&#9814;</span>
+         <span onclick="promotePiece('B')" style="cursor: pointer; zIndex: 20; border: 1px solid #ababab">&#9815;</span>
+         <span onclick="promotePiece('N')" style="cursor: pointer; zIndex: 20; border: 1px solid #ababab">&#9816;</span>
+  </div>
+ </div>
+</div>
+
+<div id="optionsid" style="visibility: hidden">
+ <div style="position: absolute; top: 60px; left: 700px">
+ <select id="boardselection" onchange="changeBoard();">
+ <option value="Green">Green</option>
+ <option value="Light Green">Light Green</option>
+ <option value="Dark Green">Dark Green</option>
+ <option value="Brown">Brown</option>
+ <option value="Blue">Blue</option>
+ <option value="Dark Blue" selected>Dark Blue</option>
+ <option value="Grey">Grey</option>
+ <option value="Cyan">Cyan</option>
+ <option value="Purple">Purple</option>
+ </select>
+ </div>
+</div>
+<div id="tooltipsid">
+ <div style="position:absolute; top: 55px; left: 600px;" ><button onclick="engineGame()" id="engineid" style="font-size: 12pt" alt="Play Engine" title="Play Engine">p</button></div>
+ <div style="position:absolute; top: 55px; left: 629px;" ><button onclick="newGame()" id="newgameid" style="font-size: 12pt" alt="New Game" title="New Game">n</button></div>
+ <div style="position:absolute; top: 55px; left: 657px;" ><button onclick="runAnalysis()" id="analyzeid" style="font-size: 12pt" alt="Analyze Position" title="Analyze Position">a</button></div>
+ <div style="position:absolute; top: 55px; left: 685px;" ><button onclick="resignGame()" id="resignid" style="font-size: 12pt" alt="Resign" title="Resign">r</button></div>
+ <div style="position:absolute; top: 55px; left: 710px;" ><button onclick="takeBack()" id="undoid" style="font-size: 12pt" alt="Takeback" title="Takeback">&#8592;</button></div>
+ <div style="position:absolute; top: 55px; left: 745px;" ><button onclick="reverseBoard()" style="font-size: 10pt" alt="Reverse" title="Reverse">&#8634;</button></div>
+ <div style="position:absolute; top: 55px; left: 775px;" ><button onclick="expandBoard()" id="expandbtid" style="font-size: 9pt" alt="Expand" title="Expand">&#x2921;</button></div>
+</div>
+ <div style="position:absolute; top: 55px; left: 805px;" ><button onclick="collapseTool()" id="collapseid" style="font-size: 12pt" alt="Tooltips" title="Tooltips">&#8801</button></div>
+</div>
+<div id="chesslisting" class="chesslisting">
+ <div id="chesslistid" style="margin: 0px 0px 0px 0px; overflow-y:scroll; 
+         width: 840px; height: 275px; border-collapse: collapse">
+          <table style="display: block; table-layout: fixed; width: 840px" id="chesstableid"></table>
+ </div>
+</div>
+<div id="chessfooter" class="chessfooter"><div id="chessgame" style="margin: 5px 5px 5px 5px; overflow-y:scroll;
+			 width: 825px; height: 225px;"></div></div>
+<div id="chessside0" class="chessside0">
+  <div class="chessrate" id="chessrate"></div>
+</div>
+<div id="chessside1" class="chessside1"> 
+ <div style="margin: 5px 5px 5px 5px">
+ <select id="databases" onchange="changeDatabase();">
+ <option value="">Databases</option>
+ <option value="demo2">demo2.pgn</option>
+ <option value="demo4">demo4.pgn</option>
+ <option value="demo5">demo5.pgn</option>
+ <option value="mygames">mygames.pgn</option>
+ <option value="alek">Alek</option>
+ <option value="AlekhineExchange">Alekhine Exchange</option>
+ <option value="Alekhine2Nc3-d5">Alekhine (2.Nc3 d5)</option>
+ <option value="BenkoGambit">Benko Gambit</option>
+ <option value="CatalanClosed">Catalan Closed</option>
+ <option value="CatalanOpen">Catalan Open</option>
+ <option value="FrenchAdvance">French Advance</option>
+ <option value="FrenchExachange">French Exchange</option>
+ <option value="FrenchRubinstein">French Rubinstein</option>
+ <option value="FrTarrasch3c5">French Tarrasch (3.c5)</option>
+ <option value="FrTarrasch3Nf6">French Tarrasch (3.Nf6)</option>
+ <option value="FrTarraschOther3">French Tarrasch (3.Other)</option>
+ <option value="FrWinawerMain">French Winawer (Main)</option>
+ <option value="GiuocoPiano">Giuoco Piano</option>
+ <option value="KIDClassical">King's Indian (Classic)</option>
+ <option value="KIDFianchetto">King's Indian (Fianchetto)</option>
+ <option value="KIDSaemisch">King's Indian (Saemisch)</option>
+ <option value="KIDPetrosian">King's Indian (Petrosian)</option>
+ <option value="QID4a3">Queen's Indian (4.a3)</option>
+ <option value="QID4e3">Queen's Indian (4.e3)</option>
+ <option value="QID4g3-Ba6">Queen's Indian (4.g3 Ba6)</option>
+ <option value="QID4Nc3">Queen's Indian (4.Nc3)</option>
+ <option value="RuyLopezBerlin">Ruy Lopez (Berlin)</option>
+ <option value="RuyLopezBreyer">Ruy Lopez (Breyer)</option>
+ <option value="RuyLopezChigorin">Ruy Lopez (Chigorin)</option>
+ <option value="RuyLopezMarshall">Ruy Lopez (Marshall)</option>
+ <option value="RuyLopezAntiMarshall">Ruy Lopez (AntiMarshall)</option>
+ <option value="PetroffMain">Petroff Main</option>
+ <option value="PetroffOther3">Petroff Other 3.</option>
+ <option value="Scotch4Bc5">Scotch (4.Bc5)</option>
+ <option value="Scotch4Nf6">Scotch (4.Nf6)</option>
+ <option value="SicilianAlapin2Nf6">Sicilian Alapin (2.Nf6)</option>
+ <option value="SicilianAlapin2d5">Sicilian Alapin (2.d5)</option>
+ <option value="SicilianLowenthal">Sicilian Lowenthal</option>
+ <option value="SicilianNajdorf6f3">Sicilian Najdorf (f6 f3)</option>
+ <option value="SicilianNajdorf6f4">Sicilian Najdorf (f6 f4)</option>
+ <option value="SicilianNajdorf6Bg5">Sicilian Najdorf (f6 Bg5)</option>
+ <option value="SicilianNajdorf6Be3">Sicilian Najdorf (f6 Be3)</option>
+ <option value="SicilianNajdorf6Be2">Sicilian Najdorf (f6 Be2)</option>
+ <option value="SicilianNajdorf6Bc4">Sicilian Najdorf (f6 Bc4)</option>
+ <option value="SicilianRossolimo">Sicilian Rossolimo</option>
+ <option value="SicilianScheveningen">Sicilian Scheveningen</option>
+ <option value="SicilianSveshnikov">Sicilian Sveshnikov</option>
+ <option value="SicilianTaimanov5Nb5">Sicilian Talmanov (5.Nb5)</option>
+ <option value="SicilianTaimanovMain">Sicilian Talmanov (Main)</option>
+ </select>
+ </div>
+</div>
+<div id="chessside2" class="chessside2"> 
+ <div style="margin: 5px 5px 5px 5px">
+<br>
+White elo:
+<select id="filter_welo_ops">
+<option>=</option>
+<option selected>>=</option>
+<option><=</option>
+<option>not =</option>
+</select>
+<input value="1500" placeholder="1500" maxlength="4" size="4" type="text" id="filter_welo" />
+Black elo:
+<select id="filter_belo_ops">
+<option>=</option>
+<option selected>>=</option>
+<option><=</option>
+<option>not =</option>
+</select>
+<input value="1500" placeholder="1500" maxlength="4" size="4" type="text" id="filter_belo" />
+Moves:
+<select id="filter_moves_ops">
+<option>=</option>
+<option selected>>=</option>
+<option><=</option>
+<option>not =</option>
+</select>
+<input value="5" placeholder="5" maxlength="3" size="3" type="text" id="filter_moves" /><br>
+Result:<br>
+<input type="checkbox" id="filter_res1" value="1-0" checked>1-0
+<input type="checkbox" id="filter_res2" value="0-1" checked>0-1
+<input type="checkbox" id="filter_res3" value="1/2-1/2" checked>1/2-1/2
+</div>
+</div>
+<div id="chessside3" class="chessside3"> 
+<div style="margin: 5px 5px 5px 5px">
+ <div style="margin: 5px 5px 5px 5px; width=50px"> Total: <span id="totalid">0</span><br> Timer: <span id="timerid">00:00</span></div>
+ <div style="margin: 3px 1px 1px 3px"> <input class="chessbutton1" type="button" value="<<" onclick="resetGame()">
+ <input class="chessbutton1" type="button" value="<" onclick="backwardPlay()">
+ <input class="chessbutton1" type="button" value=">" onclick="forwardPlay()">
+ <input class="chessbutton1" type="button" value=">>" onclick="endGame()"><br>
+ <button class="chessbutton1" type="button" value="&#9654;" onclick="repeatPlay()" id="repeatid">&#9654;</button>
+ <input type="text" value="25" id="limitmoveid" size=3 maxlength=3/>
+ <button class="chessbutton1" type="button" value="&#9632;" onclick="playAW()" id="musicid">&#9632;</button>
+ <input type="text" value="330.924" id="musictimeid" size=6 maxlength=6 onchange="MUSIC_TIME=this.value"/>
+ </div>
+</div>
+</div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pegjs/0.9.0/peg.min.js"></script>
+<script type="text/javascript">
+
+
+    const bINITFEN_ = "RNBKQBNR/PPPPPPPP/8/8/8/8/pppppppp/rnbkqbnr w KQkq - 0 1"
+    const wINITFEN_ = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQKq - 0 1"
+    var   _NO_POSSIBLE_MOVES_ = false;
+    var   _POSSIBLE_STALE_MATE_ = false;
+    var   _POSSIBLE_CHECK_MATE_ = false;
+    var   _CHECK_MATE_ = false;
+    var   _STALE_MATE_ = false;
+    var   _CHECK_KING_ = false;
+    var   REVERSE      = false;
+    const WHITE        =  97;
+    const BLACK        =  98;
+    const UNMOVE       = 100;
+    const GOODMOVE     = 101;
+    const ENPASSANT    = 102;
+    const EATPIECE     = 103;
+    const CASTLESHORT  = 104;
+    const CASTLELONG   = 105;
+    const horiz = [ "a", "b", "c", "d", "e", "f", "g", "h" ];
+    const chessdiv   = document.getElementById("chessdiv");
+    const chessboard = document.getElementById("chessboard");
+    const chessgame = document.getElementById("chessgame");
+    const chessrate = document.getElementById("chessrate");
+    const chessside0 = document.getElementById("chessside0");
+    const engineid = document.getElementById("engineid");
+    const whitepromotionid = document.getElementById("whitepromotionid");
+    const blackpromotionid = document.getElementById("blackpromotionid");
+
+    // populate header
+    const wplayer = document.getElementById("wplayer");
+    const bplayer = document.getElementById("bplayer");
+    const welo    = document.getElementById("whiteelo");
+    const belo    = document.getElementById("blackelo");
+    const eventid = document.getElementById("eventid");
+    const dateid  = document.getElementById("dateid");
+    const resid   = document.getElementById("resultid");
+
+    // opening header
+    const ecoid   = document.getElementById("ecoid");
+    const openingid   = document.getElementById("openingid");
+    const variationid   = document.getElementById("variationid");
+
+    const img = document.createElement("img");
+    img.id = "thegreatboard";
+    img.src = "/images/chessboarddarkblue.png";
+    img.style.display = "none"; // Turns off displaying it
+    chessboard.appendChild(img); // Puts the image in the image container
+    img.style.display = "block";
+
+    // move hints
+    const source_ = document.createElement('div');
+    const destination_ = document.createElement('div');
+    source_.className = "source"; source_.style.visibility = "hidden";
+    destination_.className = "destination"; destination_.style.visibility = "hidden";
+    source_.loc_ = 'a1';
+    destination_.loc_ = 'a1';
+    chessboard.appendChild(source_);
+    chessboard.appendChild(destination_);
+
+
+    // log
+    function log(msg) { console.log(msg); } 
+
+    // message
+    const messagedivid = document.getElementById("messagedivid");
+    const messageid = document.getElementById("messageid");
+    var int_message = 0, msgtime = null;
+    function showmessage(msg) {
+      if (int_message > 20) { int_message = 0; clearInterval(msgtime); 
+        messagedivid.style.visibility = 'hidden';
+        messageid.innerHTML = '';
+      }
+      int_message ++;
+    }
+    function message(msg, err = true) {
+        int_message = 0;
+        messagedivid.style.visibility = 'visible';
+        messageid.innerHTML = msg;
+        msgtime = setInterval(showmessage, 100, msg);
+        if (err) throw "Error.";
+    }
+
+    // Position:
+    img.className = "chessxboardimg"; 
+
+
+    // Board Selection
+    function changeBoard() {
+        const board = document.getElementById("boardselection");
+        const selected_board= board.options[board.selectedIndex].value;
+      var img_ = null;
+      if (selected_board == "Dark Blue") {
+         const chessboard = document.getElementById("thegreatboard");
+         if (!REVERSE) {
+           img_ = "/images/chessboarddarkblue.png";
+         } else {
+           img_ = "/images/chessboarddarkblueb.png";
+         }
+         chessboard.src = img_;
+      } else
+      if (selected_board == "Light Green") {
+         const chessboard = document.getElementById("thegreatboard");
+         if (!REVERSE) {
+           img_ = "/images/chessboardlightgreen.png";
+         } else {
+           img_ = "/images/chessboardlightgreenb.png";
+         }
+         chessboard.src = img_;
+      } else
+      if (selected_board == "Dark Green") {
+         const chessboard = document.getElementById("thegreatboard");
+         if (!REVERSE) {
+           img_ = "/images/chessboarddarkgreen.png";
+         } else {
+           img_ = "/images/chessboarddarkgreenb.png";
+         }
+         chessboard.src = img_;
+      } else
+      if (selected_board == "Green") {
+         const chessboard = document.getElementById("thegreatboard");
+         if (!REVERSE) {
+           img_ = "/images/chessboardgreen.png";
+         } else {
+           img_ = "/images/chessboardgreenb.png";
+         }
+         chessboard.src = img_;
+      } else
+      if (selected_board == "Brown") {
+         const chessboard = document.getElementById("thegreatboard");
+         if (!REVERSE) {
+           img_ = "/images/chessboardbrown.png";
+         } else {
+           img_ = "/images/chessboardbrownb.png";
+         }
+         chessboard.src = img_;
+      } else
+      if (selected_board == "Blue") {
+         const chessboard = document.getElementById("thegreatboard");
+         if (!REVERSE) {
+           img_ = "/images/chessboardblue.png";
+         } else {
+           img_ = "/images/chessboardblueb.png";
+         }
+         chessboard.src = img_;
+         
+      } else
+      if (selected_board == "Grey") {
+         const chessboard = document.getElementById("thegreatboard");
+         if (!REVERSE) {
+           img_ = "/images/chessboardgrey.png";
+         } else {
+           img_ = "/images/chessboardgreyb.png";
+         }          
+         chessboard.src = img_;
+      } else
+      if (selected_board == "Cyan") {
+         const chessboard = document.getElementById("thegreatboard");
+         if (!REVERSE) {
+           img_ = "/images/chessboardcyan.png";
+         } else {
+           img_ = "/images/chessboardcyanb.png";
+         }          
+         chessboard.src = img_;
+      } else
+      if (selected_board == "Purple") {
+         const chessboard = document.getElementById("thegreatboard");
+         if (!REVERSE) {
+           img_ = "/images/chessboardpurple.png";
+         } else {
+           img_ = "/images/chessboardpurpleb.png";
+         }          
+         chessboard.src = img_;
+      } 
+    }
+
+    // Collapse Tooltips
+    var TOOLS_ = true;
+    function collapseTool() {
+        const collapseid = document.getElementById("tooltipsid");
+        const optionsid = document.getElementById("optionsid");
+        TOOLS_ = (TOOLS_) ? false : true;
+        collapseid.style.visibility = (TOOLS_) ? "visible" : "hidden";
+        optionsid.style.visibility = (TOOLS_) ? "hidden" : "visible";
+    }
+
+    // Reverse Board
+    var reverse_ =  { a:"h", b:"g", c:"f", d:"e", e:"d", f:"c", g:"b", h:"a",
+                      1:8, 2:7, 3:6, 4:5, 5:4, 6:3, 7:2, 8:1 }
+    function reverseLoc(location) {
+        if (REVERSE) {
+             return reverse_[location[0]] + reverse_[location[1]];
+        } 
+        return location;
+    }
+    function reverseBoard() {
+         // const chessboard = document.getElementById("thegreatboard");
+         chessboard.style.visibility = "hidden";
+         REVERSE = !REVERSE;
+         changeBoard();
+         for (var p in Board) {
+            var board = Board[p];
+            if (board != null) {
+               if (EXPAND_) {
+                  board.piece.className = "piece " + "p_" + reverseLoc(board.location);
+               } else {
+                  board.piece.className = "xpiece " + "px_" + reverseLoc(board.location);
+               }
+            }
+         }
+         for (var p in Benched) {
+            var board = Benched[p], loc_ = null;
+            if (board != null) {
+               if (EXPAND_) {
+                 board.piece.className = "piece " + "p_" + reverseLoc(board.location);
+               } else {
+                 board.piece.className = "xpiece " + "px_" + reverseLoc(board.location);
+               }
+            }
+         }
+         source_.className = (EXPAND_) ? ( "source piece p_" + reverseLoc(source_.loc_)) :
+                                          ( "xsource xpiece px_" + reverseLoc(source_.loc_)); 
+         destination_.className = (EXPAND_) ? ( "destination piece p_" + reverseLoc(destination_.loc_)) :
+                                           ( "xdestination xpiece px_" + reverseLoc(destination_.loc_)); 
+
+         const game = initHeader(false, false, false);
+         infoHeader(game);
+
+        chessboard.style.visibility = "visible";
+        if (ENGINEGAME_ || PRACTICEGAME_) {
+            if (RESIGN_ || FETCHEDGAME_ || PROMOTE_) return;
+            playEngine();
+        }
+    }
+
+    // expandBoard
+    var EXPAND_ = false;
+    function expandBoard() {
+         const expandbt = document.getElementById("expandbtid");
+         const chessboardimg = document.getElementById("thegreatboard");
+         const chessboard = document.getElementById("chessboard");
+         const chesslisting = document.getElementById("chesslisting");
+         const chessside1 = document.getElementById("chessside1");
+         const chessside2 = document.getElementById("chessside2");
+         const chessside3 = document.getElementById("chessside3");
+         chessboard.style.visibility = "hidden";
+         EXPAND_ = (EXPAND_) ? false : true;
+         if (EXPAND_) {
+            expandbt.innerHTML = '&#x29C5;';
+            for (var p in Board) {
+               var board = Board[p];
+               if (board != null) {
+                   board.piece.className = "piece " + "p_" + reverseLoc(board.location);
+               }
+            }
+            for (var p in Benched) {
+               var board = Benched[p], loc_ = null;
+               if (board != null) {
+                  board.piece.className = "piece " + "p_" + reverseLoc(board.location);
+               }
+            } 
+            chessboard.className = 'chessboard'
+            chessboardimg.className = 'chessboardimg'
+            chesslisting.style.visibility = 'hidden';
+            chessside1.style.visibility = 'hidden';
+            chessside2.style.visibility = 'hidden';
+            chessside3.style.visibility = 'hidden';
+            chessside0.className = "chessxside0";
+         } else {
+             expandbt.innerHTML = '&#x2921;';
+            for (var p in Board) {
+               var board = Board[p];
+               if (board != null) {
+                   board.piece.className = "xpiece " + "px_" + reverseLoc(board.location);
+               }
+            }
+            for (var p in Benched) {
+               var board = Benched[p], loc_ = null;
+               if (board != null) {
+                  board.piece.className = "xpiece " + "px_" + reverseLoc(board.location);
+               }
+            }
+            chessboard.className = 'chessxboard'
+            chessboardimg.className = 'chessxboardimg'
+            chesslisting.style.visibility = 'visible';
+            chessside1.style.visibility = 'visible';
+            chessside2.style.visibility = 'visible';
+            chessside3.style.visibility = 'visible';
+            chessside0.className = "chessside0";
+         }
+         source_.className = (EXPAND_) ? ( "source piece p_" + source_.loc_) :
+                                          ( "xsource xpiece px_" + source_.loc_);
+         destination_.className = (EXPAND_) ? ( "destination piece p_" + destination_.loc_) :
+                                           ( "xdestination xpiece px_" + destination_.loc_);
+         chessboard.style.visibility = "visible";
+    }
+
+
+    // Board Selection
+    function changeDatabase() {
+        const chessdb = document.getElementById("databases");
+        const selected_db= chessdb.options[chessdb.selectedIndex].value;
+        changePGN();
+    }
+
+    function changePGN() {
+        const chessdb = document.getElementById("databases");
+        const selected_db= chessdb.options[chessdb.selectedIndex].value;
+        if (selected_db != null && selected_db != "") {
+            const _pgn = "/pgn/" + selected_db + ".pgn";
+            loadPGN(_pgn);
+        }
+    }
+
+    function illegal_move(msg) { throw msg; }
+
+    const rules = document.styleSheets[0].rules || document.styleSheets[0].cssRules;
+    function getCSS(cls) {
+       for (p in rules) {
+         var rule = rules[p];
+         if (rule.selectorText == cls) {
+            return { left: parseInt(rule.style.left.replace(/px/, "")),
+                     top: parseInt(rule.style.top.replace(/px/, "")) }
+         }
+       }
+       return null;
+    }
+
+    const SOURCE_HIST_ = []
+    function emptySource() { 
+          while (SOURCE_HIST_.length) SOURCE_HIST_.pop(); 
+          source_.style.visibility = 'hidden';
+          destination_.style.visibility = 'hidden';
+     }
+    function setSource(piece) {
+      source_.loc_ = piece.oldlocation_;
+      destination_.loc_ = piece.location_;
+      source_.className = (EXPAND_) ? ( "source piece p_" + reverseLoc(source_.loc_)) :
+                                     ( "xsource xpiece px_" + reverseLoc(source_.loc_));
+      destination_.className = (EXPAND_) ? ( "destination piece p_" + reverseLoc(destination_.loc_)) :
+                                     ( "xdestination xpiece px_" + reverseLoc(destination_.loc_));
+      SOURCE_HIST_.push({ src: source_.loc_, dest: destination_.loc_ });
+      source_.style.visibility = 'visible';
+      destination_.style.visibility = 'visible';
+    }
+
+    function unsetSource() {
+      var piece = SOURCE_HIST_.pop();
+      if (SOURCE_HIST_.length > 0) {
+        piece = SOURCE_HIST_[SOURCE_HIST_.length - 1]; 
+        source_.loc_ = piece.src;
+        destination_.loc_ = piece.dest;
+        source_.className = (EXPAND_) ? ( "source piece p_" + reverseLoc(source_.loc_)) :
+                                     ( "xsource xpiece px_" + reverseLoc(source_.loc_));
+        destination_.className = (EXPAND_) ? ( "destination piece p_" + reverseLoc(destination_.loc_)) :
+                                     ( "xdestination xpiece px_" + reverseLoc(destination_.loc_));
+        source_.style.visibility = 'visible';
+        destination_.style.visibility = 'visible';
+      } else {
+        source_.style.visibility = 'hidden';
+        destination_.style.visibility = 'hidden';
+      }
+    }
+
+    var SIDETOMOVE_ = WHITE, MOVECOUNT_ = 0;
+    var sidetoid = document.getElementById("sidetomoveid");
+    function TurnToPlay(piece) {
+        SIDETOMOVE_ = (SIDETOMOVE_ == WHITE) ? BLACK: WHITE;
+        MOVECOUNT_ = MOVECOUNT_ + ((SIDETOMOVE_ == WHITE ) ? 1 : 0);
+        sidetoid.innerHTML = (SIDETOMOVE_ == WHITE) ? '&#9675;' : '&#9679;';
+        if (piece != null) {
+           LASTPIECE_ = piece;
+           setSource(piece);
+           if (piece.restype_ == CASTLELONG || piece.restype_ ==  CASTLESHORT) { chess_castle.play(); } else
+           if (piece.restype_ == EATPIECE) { chess_castle.play(); } else { chess_move.play(); }
+        } else chess_move.play();
+    }
+
+    function mouseDown(e)  {
+         e.preventDefault();
+         if (RESIGN_ || FETCHEDGAME_ || PROMOTE_ || DONEGAME_) return;
+         offsetLeft = chessdiv.offsetLeft + chessboard.offsetLeft + ((EXPAND_) ? (20 + 28) : (15 + 16));
+         offsetTop = chessdiv.offsetTop + chessboard.offsetTop + ((EXPAND_) ? (20 + 28) : (15 + 16));
+         this.startPosX = offsetLeft + this.offsetLeft;
+         this.startPosY = offsetTop + this.offsetTop ;
+         chessboard.targetmove_ = this;
+         chessboard.addEventListener('mousemove', mouseMove);
+    }
+
+    function searchGame() {
+        return ecoGame_.join(' ');
+    }
+
+    var DONEGAME_ = false; const engineGames = [];
+    function doneGame(resign = false, checkmate = false, draw = false) {
+        var game = {}, msg = "Game Over!";
+        if (ecoGame_.length > 0) {
+          DONEGAME_ = true;
+          var moves_ = 0, lastmove_ = null;
+          game = initHeader(resign, draw, true);
+          infoHeader(game);
+          game.moves = ecoGame_.join(" ") + " " + game.rt + " ";
+          moves_ = game.moves.split(' ').length - 1; moves_ = Math.floor(moves_ / 2);
+          game.ct = moves_;
+          game.eco = ecoid.innerHTML;
+          game.round = String(engineGames.length + 1);
+          engineGames.push(game);
+          while (ecoGame_.length) ecoGame_.pop();
+          Games = engineGames;
+          const movespace3 = document.createTextNode("   ");
+          const movespan3 = document.createElement("span");
+          movespan3.className = "chesspiecers";
+          movespan3.style.color = "#1255b3";
+          movespan3.innerHTML = " " + game.rt;
+          chessgame.appendChild(movespace3);
+          chessgame.appendChild(movespan3);
+        
+          refreshGame(false, null, false);
+       }
+       if (resign || checkmate) msg = "Game Over! Winning team is " + game.win;
+       if (draw) msg = "Game is Drawn!";
+       message(msg, false);
+       log("Done Game ...");
+    }
+
+    function infoHeader(game) {
+        // populate header
+         eventid.innerHTML = game.ev + " (" + game.si + ")";
+         dateid.innerHTML = game.dt;
+         wplayer.innerHTML = game.wp;
+         bplayer.innerHTML = game.bp;
+         welo.innerHTML = "(" + game.we + ")";
+         belo.innerHTML = "(" + game.be + ")";
+         resid.innerHTML = game.rt;
+    }
+
+    function initHeader(resign = false, draw = false, rating = false) {
+        const game = {}
+        if (ENGINEGAME_) {
+          game.wp = (REVERSE) ? "Stockfish 15" : "Smart Me";
+          game.bp = (REVERSE) ? "Smart Me" : "Stockfish 15";
+          game.we = String((REVERSE) ? 2800 : 1800);
+          game.be = String((REVERSE) ? 1800 : 2800);
+          game.dt = new Date(Date.now()).toLocaleString();
+          game.ev = "Man vs Machine";
+        } else {
+          game.wp = (REVERSE) ? "Guest Player" : "Home Player";
+          game.bp = (REVERSE) ? "Home Player" : "Guest Player";
+          game.we = String((REVERSE) ? 1800 : 1800);
+          game.be = String((REVERSE) ? 1800 : 1800);
+          game.dt = new Date(Date.now()).toLocaleString();
+          game.ev = "Home vs Guest";
+        }
+        game.si = "Home";
+        if (!rating) { game.rt = ""; } else {
+          if (resign) {
+             game.rt = (REVERSE) ? "1-0" : "0-1";
+             game.win = (REVERSE) ? "WHITE" : "BLACK";
+          } else {
+             game.rt = (SIDETOMOVE_ == WHITE) ? "0-1" : "1-0";
+             game.win = (SIDETOMOVE_ == WHITE) ? "BLACK" : "WHITE";
+          }
+          if (draw) { game.rt = "1/2-1/2"; game.win = "DRAW"}
+        }
+        return game;
+    }
+
+
+    var ENGINEGAME_ = false;
+    function engineGame() {
+        ENGINEGAME_ = (ENGINEGAME_) ? false: true; 
+        engineid.innerHTML = (ENGINEGAME_) ? 'e' : 'p';
+        if (RESIGN_ || FETCHEDGAME_ || PROMOTE_) return;
+        if (ENGINEGAME_) { 
+           playEngine(); 
+           const game = initHeader();
+           infoHeader(game);
+        }
+    }
+
+    function resetGame(analyze) {
+        MOVECOUNT_ = 0; SIDETOMOVE_ = WHITE; PRACTICEGAME_ = true; FETCHEDGAME_ = false; 
+        RESIGN_ = false; ANALYZEGAME_ = analyze; DONEGAME_ = false;
+    }
+
+    const ecoGame_ = [];
+    var  PRACTICEGAME_ = false;
+    function newGame() {
+        if (PROMOTE_) return;
+        if (!ANALYZEGAME_) doneGame(true); 
+        resetGame(false);
+        chessgame.innerHTML = ""; 
+        reloadBoard();
+        emptySource();
+        chess_reset.play();
+        chess_move.volume = 1.0;
+        if (ENGINEGAME_ && PRACTICEGAME_) { playEngine(); }
+    }
+
+    var RESIGN_ = false;
+    function resignGame() {
+       RESIGN_ = true;
+       doneGame(true);
+    }
+
+    var ANALYZEGAME_ = false;
+    function runAnalysis() {
+       const analysisid = document.getElementById("analysisid"); 
+       analysisid.style.visibility = "visible"; 
+    }
+    function cancelAnalysis() {
+       const analysisid = document.getElementById("analysisid"); 
+       analysisid.style.visibility = "hidden"; 
+    }
+
+    function analyzeGame() {
+       const analysisid = document.getElementById("analysisid"); 
+       const fenid = document.getElementById("fenid"); 
+       const fenName = document.getElementById("fenName"); 
+       analysisid.style.visibility = "hidden"; 
+       var fen = fenid.value;
+       var who_ = fen.split(' ')[1] 
+       resetGame(true);
+       try {
+         const reverseB = checkPositionLegality(fen);
+         if (reverseB) {
+            repositionBoard(wINITFEN_);
+            reverseBoard();
+         } else {
+           repositionBoard(fen);
+         }
+         chessgame.innerHTML = "";  Games = [];
+         while (ecoGame_.length > 0)  ecoGame_.pop();
+         SIDETOMOVE_ = (who_ == 'b') ? BLACK : WHITE;
+         sidetoid.innerHTML = (SIDETOMOVE_ == WHITE) ? '&#9675;' : '&#9679;';
+         // add FEN entry.   
+         const opt = document.createElement('option');
+         opt.value = fenid.value; 
+         fenName.appendChild(opt);
+         if (ENGINEGAME_) { playEngine(); }
+       } catch(e) { log(e) }
+
+       fenid.value = '';
+
+    }
+
+    var matetime = null, int_mate = 0;
+    function checkEngineState(cnt_, piece, move_) {
+        if (int_mate > 20) { int_mate = 0; clearInterval(matetime)  }
+        int_mate ++;
+        if (ENGINEMOVE_ != null) {
+            int_mate = 0;
+            clearInterval(matetime);
+            if (_STALE_MATE_) {
+                 doneGame(false, false, true);
+            } else
+            if (_NO_POSSIBLE_MOVES_) {
+            } else
+            if (_CHECK_MATE_) {
+                 updateMate(); 
+                 doneGame(false, true, false);
+            } else {
+                 // let us calculate score (based on opponents pondered move.
+                 // calculate only after book.
+                 searchBest(); 
+            }
+        }
+    }
+
+    async function checkState(cnt_, piece, move_) {
+       const whichside =  (SIDETOMOVE_ == WHITE) ? 'b' : 'w'; // see if next move is mated.
+       var fen =  generateFEN(whichside, enpassant = "-") 
+       _POSSIBLE_CHECK_MATE_ = false; _POSSIBLE_STALE_MATE_ = false;
+       _CHECK_MATE_ = false; _STALE_MATE_ = false; _NO_POSSIBLE_MOVES_ = false;
+       ENGINEMOVE_ = null;
+       // post("setoption name Hash value 8888");
+       // post("setoption name UCI_LimitStrength 2800");
+       post("setoption name UCI_ShowWDL value true");
+       post("setoption name UCI_AnalyseMode value true");
+       post("setoption name MultiPV value 5");
+       post("setoption name Slow Mover type spin default 84 min 10 max 1000");
+       post("isready");
+       post("ucinewgame");
+       post("position fen " + fen);
+       await post("go movetime 500 depth 18");
+       TurnToPlay(piece);
+       matetime = setInterval(checkEngineState, 50, cnt_, piece, move_);
+    } 
+
+    function checkPositionLegality(fen) {
+       if (fen == null) fen =  generateFEN('w', enpassant = "-") 
+       var fens_ = fen.split(' ');
+       var initfen_ = fens_[0];
+       var nmov_ = fens_[1];
+       var castl = fens_[2].match(/^(KQkq|Qkq|KQk|Kkq|KQq|KQ|Kk|Kq|Qk|Qq|kq|Q|q|K|k|-)$/g);
+       var binitfen_ = bINITFEN_.split(' ')[0];
+       var winitfen_ = wINITFEN_.split(' ')[0];
+       var fen_ = initfen_.split('/');
+       var cntP = initfen_.match(/[Pp]/g)
+       var cntK = initfen_.match(/[K]/g)
+       var cntk = initfen_.match(/[k]/g)
+       var Kk  = initfen_.match(/Kk|kK/g)
+       var un_ = initfen_.match(/[ACDEFGHIJLMOSTUVWXZY\.\!\#\$\%\^\&\*\(\)\_\-\+\=\[\{\]\}\;\'\:\"\<\>\>\<\?\\\~\`09]/ig)
+       var my8thrank = fen_[0]; my1strank = fen_[7];
+       if (fen_.length != 8) message("invalid number of ranks");
+       if (nmov_ != 'w' && nmov_ != 'b') message( "Invalid side (w|b).");
+       if (castl == null) message( "Invalid Castling options");
+       if (un_ != null && un_.length > 0) message( "Invalid Notation. Unknown characters found!");
+       if (Kk != null && Kk.length > 0) message( "Kings cannot be close to each other!");
+       if (cntK != null && cntK.length != 1) message( cntK.length + " White Kings not allowed!");
+       if (cntk != null && cntk.length != 1) message( cntk.length + " Black Kings not allowed!");
+       if (cntK == null || cntk == null) message("Missing king.");
+       if (cntP != null && cntP.length > 16) message( cntP.length + " Pawns not allowed!");
+       if (initfen_ == binitfen_) {
+           if (ENGINEGAME_) {
+             message( "Black cannot start the game first!");
+           } else {
+             return 1; 
+           }
+        }
+       if ((my8thrank != null && my8thrank.match(/[Pp]/)) || 
+           (my1strank != null && my1strank.match(/[Pp]/)) )
+             message( "Cannot have Pawns in the 1st and 8th ranks!");
+       return null; 
+    }
+        
+    function generateFEN(whichside, enpassant = "-") {
+      var piece = null;
+      var fen = "", spc = 0, cmp = "";
+      var castling = [0,0,0,0,0,0], cst = "";
+      for (var v=8; v>=1; v--) {
+         spc = 0;
+         for (p in horiz) {
+            piece = Board[horiz[p] + v];
+            if (piece != null) {
+                cmp =  (piece.color_.match(/dt$/)) ? piece.role_.toLowerCase() : piece.role_;
+                fen = fen + ((spc > 0) ? (spc + cmp) : cmp);
+                spc = 0;
+                // check for castling availability
+                if (cmp == 'K' && piece.location_ == 'e1' && piece.oldlocation_ == null) castling[0] =  1;
+                if (cmp == 'k' && piece.location_ == 'e8' && piece.oldlocation_ == null) castling[1] =  1;
+                if (cmp == 'R' && piece.location_ == 'h1' && piece.oldlocation_ == null) castling[2] =  1;
+                if (cmp == 'R' && piece.location_ == 'a1' && piece.oldlocation_ == null) castling[3] =  1;
+                if (cmp == 'r' && piece.location_ == 'h8' && piece.oldlocation_ == null) castling[4] =  1;
+                if (cmp == 'r' && piece.location_ == 'a8' && piece.oldlocation_ == null) castling[5] =  1;
+            } else { spc ++; }
+         }
+         fen = fen + ((spc > 0) ? spc : "");
+         if (v > 1) fen = fen + "/";
+       } 
+       if (castling[0] == 1 && castling[2] == 1) cst = cst + "K";
+       if (castling[0] == 1 && castling[3] == 1) cst = cst + "Q";
+       if (castling[1] == 1 && castling[4] == 1) cst = cst + "K";
+       if (castling[1] == 1 && castling[5] == 1) cst = cst + "q";
+       fen = fen + " " + whichside + " " + cst + " " + enpassant + " " + "0 1";
+       return fen;
+    }
+
+    var ENGINEMOVE_ = null, PONDER_ = null, int_engine = 0, enginetime = null;
+    var ENGINE_ = null, ANALYZE_ = []
+    function post(msg) { ENGINE_.postMessage(msg); }
+
+    var wscore = 0, bscore=0, wcp = 0, bcp = 0, chessdata_ = null;
+    async function loadStockfish() {
+       ENGINE_ = await new Worker('/wasm/stockfish.js');
+       ENGINE_.onmessage = function(event) {
+             var load = event.data ? event.data : event;
+             var sdata = load.split(' ');
+             var mate = sdata[8];
+             var xcp   = parseInt(sdata[9]);
+             var draw = Math.floor(parseInt(sdata[12]) / 2); 
+             var win = ( parseInt(sdata[11])) / 1000;
+             var draw = (parseInt(sdata[12])) / 1000;
+             var loss = (parseInt(sdata[13])) / 1000;
+             var wscore = (parseInt(sdata[11]) + parseInt(sdata[12])/2) / 1000;
+             var bscore = (parseInt(sdata[13]) + parseInt(sdata[12])/2) / 1000;
+             var srate = 1 / (1 + Math.exp(-0.004*xcp)); // formula from Landon Lehman blog site.
+             var pv = load.lastIndexOf("pv");
+             if (!isNaN(srate))  {
+                ANALYZE_.push({ srate: srate, mt: mate, wscore: wscore, bscore: bscore, cp: xcp, 
+					win: win, draw: draw, loss: loss, moves: load.slice(pv+3) } );
+             }
+             if (load.includes("info depth 0 score cp 0")) {
+                 _POSSIBLE_STALE_MATE_ = true;  
+                 log("possible stale mate ...");
+             } else
+             if (load.includes("info depth 0 score mate 0")) {
+                 _POSSIBLE_CHECK_MATE_ = true;  
+                 log("possible check mate ...");
+             } else
+             if (load.includes('bestmove')) {
+                ENGINEMOVE_ = sdata[1];
+                PONDER_ = sdata[3];
+                if (ENGINEMOVE_ == "(none)" && _POSSIBLE_CHECK_MATE_ == true) {
+                  _CHECK_MATE_ = true;
+                  log("mate ...");
+                } else
+                if (ENGINEMOVE_ == "(none)" && _POSSIBLE_STALE_MATE_ == true) {
+                  _STALE_MATE_ = true;
+                  log("stalemate ...");
+                } else
+                if (typeof(PONDER_) == "undefined") { 
+                   _NO_POSSIBLE_MOVES_ = true;
+                  log("mate (no possible move ...)");
+                } 
+             } 
+       };
+    }
+
+    var BOOK_ = null;
+    function searchECO() {
+       var randmove = 0, book_ = "";
+       var game_ = searchGame();
+       const ecoran_ = [];
+       BOOK_ = null;
+       for (p in ECO_) {
+          var eco = ECO_[p][2];
+          if (typeof(eco) != "undefined") {
+            if (eco.match(game_)) {
+               ecoran_.push(ECO_[p]);
+            } 
+          }
+       }
+       randmove = Math.floor(Math.random() * ecoran_.length)
+       if (ecoran_.length > 0 ) {
+         var idx = (SIDETOMOVE_ == WHITE) ? (MOVECOUNT_ * 2): (MOVECOUNT_ * 2 + 1) , 
+             move_ = null;
+         BOOK_ = ecoran_[randmove]
+         ecoid.innerHTML = BOOK_[0] 
+         openingid.innerHTML = BOOK_[1] 
+         variationid.innerHTML = BOOK_[2].replace(/N/g, '&#9816;').replace(/Q/g,'&#9813;').
+                  replace(/B/g,'&#9815;').replace(/K/g,'&#9812;').
+                  replace(/R/g,'&#9814;').replace(/P/g, ''); 
+         move_ = BOOK_[2].split(' ')[idx]
+         if (typeof(move_) != "undefined") { 
+           move_ = move_.replace(/^[0-9]+\./g, "");
+         } else BOOK_ = null; 
+         if (BOOK_ != null && BOOK_[2].lastIndexOf("(") >=0 ) BOOK_ = null;
+         return move_;
+       }
+       return null;
+    }
+
+    function searchBest(OPENING=true) {
+        var load_ = null, found = 0, score = 0, moveit_ = null;
+        var ponder_ = (typeof(PONDER_) == "undefined") ? "" : " " + PONDER_;
+        var move_ = ENGINEMOVE_ + ponder_;
+        var analyze = 50;
+        for (p in ANALYZE_) {
+          const l_ = ANALYZE_[p]; 
+          found = l_.moves.lastIndexOf(move_); 
+          if (found == 0) {
+            if (l_.srate > score ) {
+              load_ = l_;
+              score = load_.srate
+            }
+          }
+        }
+        if (!ANALYZEGAME_ && OPENING) moveit_ = searchECO();
+        if (load_ != null && load_.mt == "mate") { analyze = 100; } else
+        if (moveit_ != null) { analyze = 50; } else { if (load_ != null) analyze = (load_.srate * 100) }
+        chessrate.style.height = analyze + "%"; 
+        chessside0.style.backgroundColor = (!REVERSE) ? "#FFFFFF" : "#404040";
+        chessrate.style.backgroundColor = (!REVERSE) ? "#404040" : "#FFFFFF";
+        if (moveit_ != null) return moveit_;
+        return null;
+    }
+
+    var PROMOTE_ = false, PROMOTEPIECE_ = null;
+    const promo = document.getElementById("promoteid");
+    function promotePiece(piece) {
+       PROMOTE_ = false; PROMOTEPIECE_ = piece;
+       whitepromotionid.style.visibility = 'hidden';
+       blackpromotionid.style.visibility = 'hidden';
+       promo.style.visibility = "hidden";
+    }
+
+    var int_promote = 0;
+    function readyPromote(piece, loc_) {
+        if (int_promote > 200) {
+           int_promote = 0;
+           clearInterval(promotetime);
+           takeMove(piece, loc_, 'Q'); // taking forever to decide, let's promote to Queen
+           promotePiece(null);
+        }
+        if (!PROMOTE_ && PROMOTEPIECE_ != null) { 
+           clearInterval(promotetime);
+           takeMove(piece, loc_, PROMOTEPIECE_);
+           promotePiece(null);
+        }
+        int_promote ++;
+    }
+
+    var promotetime = '';
+    function promoteChoice(piece, loc_, color) {
+       PROMOTE_ = true;
+       promo.style.visibility = "visible";
+       if (color == 'lt') {
+         whitepromotionid.style.visibility = 'visible';
+         blackpromotionid.style.visibility = 'hidden';
+       } else {
+         whitepromotionid.style.visibility = 'hidden';
+         blackpromotionid.style.visibility = 'visible';
+       }
+       promotetime = setInterval(readyPromote, 50, piece, loc_);
+    }
+
+    function updateMate()  {
+      const chk = document.getElementById(LASTMOVE_);
+      if (chk != null) {
+        const cnt_ = LASTMOVE_.split('_')[1];
+        const move_ = LASTMOVE_.split('_')[2];
+        chk.innerHTML = (_CHECK_MATE_ || _NO_POSSIBLE_MOVES_) ? '#' : (_CHECK_KING_ ? '+' : '');
+        for (p in ecoGame_) {
+           const eco_ = ecoGame_[p];
+           if (eco_ == cnt_ + '.' + move_ + '+') {
+                ecoGame_[p] = cnt_ + '.' + move_ + '#';
+           } else
+           if (eco_ == move_ + '+') {
+                ecoGame_[p] = move_ + '#';
+            }
+        }
+      }
+    }
+
+    function captureEngineMove() {
+        if (int_engine > 150) { int_engine = 0; clearInterval(enginetime); log("done timer ...")  }
+        int_engine ++;
+        if (ENGINEMOVE_ != null) {
+            int_engine = 0;
+            clearInterval(enginetime);
+            var oloc_ = ENGINEMOVE_.slice(0,2), nloc_ = ENGINEMOVE_.slice(-2);
+            var piece = Board[oloc_];
+            if (piece != null) {
+                var move_ = null, role;
+                move_ = searchBest();
+                if (move_ != null) { // Book moves
+                   piece = movePiece(((SIDETOMOVE_ == WHITE) ? 'lt' : 'dt'), { white: move_, black: move_ }, null, false).piece; 
+                } else {
+                   var promote = null;
+                   if (ENGINEMOVE_.length == 5) {
+                        promote = ENGINEMOVE_.slice(-1); 
+                        if (promote.match(/[QBRNqbrn]/)) { nloc_ =  ENGINEMOVE_.slice(-3,-1); promote = promote.toUpperCase();  }
+                   }
+                   piece.move = { location: nloc_, promote: promote }
+                   const src_ = identifySource(piece);
+                   if (piece.restype_ == CASTLELONG) move_ = "O-O-O"; else
+                   if (piece.restype_ == CASTLESHORT) move_ = "O-O"; else
+                   if (piece.restype_ == EATPIECE) {
+                   if (piece.role_ == 'P') 
+                         move_ = piece.oldlocation_[0] + "x" + nloc_; 
+                        else 
+                        move_ = piece.role_ + src_ + "x" + nloc_; 
+                    } else {
+                         move_ = piece.role_.replace(/P/g,'') + src_ + nloc_;
+                    }
+                }
+                moveIt(MOVECOUNT_ + 1, move_, (_CHECK_MATE_) ? '#' : (_CHECK_KING_ ? '+' : ''));
+                TurnToPlay(piece);
+                if (_STALE_MATE_) { doneGame(false, false, true) }
+                if (_CHECK_MATE_ || _NO_POSSIBLE_MOVES_) { 
+                     updateMate();
+                     doneGame(false, true); 
+                }
+            } else {
+                if (_STALE_MATE_) { doneGame(false, false, true) }
+                if (_CHECK_MATE_ || _NO_POSSIBLE_MOVES_) { 
+                     updateMate();
+                     doneGame(false, true); 
+                }
+                TurnToPlay(piece);
+            }
+        }
+    }
+
+
+    async function playEngine(enpassant = "-") {
+       var whichside = null;
+       if (DONEGAME_) return;
+       if (SIDETOMOVE_ == WHITE && REVERSE) whichside = "w"; else
+       if (SIDETOMOVE_ == BLACK && !REVERSE) whichside = "b"; else return;
+      
+       var fen = generateFEN(whichside, enpassant);
+       var movetime =  Math.floor(Math.random() * 200 + 500)
+       var depth =  Math.floor(Math.random() * 5 + 15)
+       ENGINEMOVE_ = null; 
+    
+       _POSSIBLE_CHECK_MATE_ = false; _POSSIBLE_STALE_MATE_ = false; 
+       _CHECK_MATE_ = false; _STALE_MATE_ = false; _NO_POSSIBLE_MOVES_ = false;
+       ANALYZE_ = [];
+       // post("setoption name Hash value 8888");
+       // post("setoption name UCI_LimitStrength 2800");
+       post("setoption name UCI_ShowWDL value true");
+       post("setoption name UCI_AnalyseMode value true");
+       post("setoption name MultiPV value 5");
+       post("setoption name Slow Mover type spin default 84 min 10 max 1000");
+       post("isready");
+       post("ucinewgame");
+       post("position fen " + fen);
+       await post("go movetime " + movetime + " depth " + depth);
+       enginetime = setInterval(captureEngineMove, 150);
+    }
+
+    var zindex_ = 0;
+    function mouseMove(e) {
+           piece = this.targetmove_;
+           x = e.clientX; y = e.clientY;
+           piece.newPosX   = piece.startPosX - x;
+           piece.newPosY   = piece.startPosY - y;
+           piece.startPosX = x;
+           piece.startPosY = y;
+           piece.style.top  = (piece.offsetTop - piece.newPosY) + "px";
+           piece.style.left = (piece.offsetLeft - piece.newPosX) + "px";
+           piece.style.zIndex = zindex_++;
+    }
+
+    function takeMove(piece, loc_, promote) {
+          var move_ = '';
+          piece.move = { location: loc_, promote: promote };
+          const src_ = identifySource(piece);
+          if (piece.restype_ == CASTLELONG) move_ = "O-O-O"; else
+          if (piece.restype_ == CASTLESHORT) move_ = "O-O"; else
+          if (piece.restype_ == EATPIECE) {
+                if (piece.role_ == 'P')
+                   move_ = piece.oldlocation_[0] + "x" + loc_;
+                 else
+                move_ = piece.role_ + src_ + "x" + loc_;
+          } else move_ = piece.role_.replace(/P/g,'') + src_ + loc_;
+
+log("log here 40 ...");
+log(_CHECK_MATE_);
+log(move_);
+        
+          moveIt(MOVECOUNT_ + 1, move_, (_CHECK_MATE_) ? '#' : (_CHECK_KING_ ? '+' : ''));
+          // moveIt(MOVECOUNT_ + 1, move_, (_CHECK_KING_ ? '+' : '') );
+          if (ENGINEGAME_) { TurnToPlay(piece); playEngine(); } else { checkState(MOVECOUNT_ + 1, piece, move_); }
+    }
+
+    chessboard.addEventListener('mouseup', function(){
+      if (RESIGN_ || FETCHEDGAME_ || PROMOTE_ || DONEGAME_) return;
+      if (typeof(this.targetmove_) != 'undefined') {
+               PRACTICEGAME_ = true; 
+               var piece = this.targetmove_, loc_ = null;
+               var offset = ((EXPAND_) ? (20 + 28) : (15 + 16));
+               var x = piece.offsetLeft + offset; var y = piece.offsetTop + offset;
+               var cls_ = null, clsp_ = null, loc_ = null, woffs = (EXPAND_) ? 96 : 64;
+               var BRK = false;
+               for (h in horiz) {
+                 for (var v=1; v<=8; v++) {
+                     loc_ = horiz[h] + v; 
+                     clsp_ =  (EXPAND_) ? ( "p_" + reverseLoc(loc_)) : ("px_" + reverseLoc(loc_));
+                     cls_ = getCSS("." + clsp_);
+                  
+                     if (cls_.left < x && cls_.left + woffs > x && cls_.top < y && cls_.top + woffs > y) {
+                        try {
+		            var promote = null, move_ = null, pclass = piece.pclass;
+                            if (SIDETOMOVE_ == WHITE && pclass.color_.match(/dt$/)) { BRK = true; break; }
+                            if (SIDETOMOVE_ == BLACK && pclass.color_.match(/lt$/)) { BRK = true; break; }
+                            if (pclass.role == 'P') {
+                               if (pclass.color == 'plt' && v == 8) promote = 'lt';
+                               if (pclass.color == 'pdt' && v == 1) promote = 'dt';
+                            } 
+                            if (promote == null) {
+                               takeMove(pclass, loc_, promote);
+                            } else {
+                               promoteChoice(pclass, loc_, promote);  
+                            }
+                            BRK = true; break;
+                        } catch(e) { 
+                            if (typeof(e.lastIndexOf) != "undefined") {
+                              var s = e.lastIndexOf('endangering its own king');
+                              if (s >= 0) { undoitMove(false); }  else log(e);
+                            } else log(e);
+                        }
+                     } 
+                 }
+                 if (BRK) break;
+               }
+               piece.style.top = ""; piece.style.left = "";
+               this.removeEventListener('mousemove', mouseMove);
+      }
+    });
+
+    function identifySource(piece_, move_) {
+       var src_ = '', srch_ = '', srcv_ = '';
+       for (p in Board) {
+         const piece = Board[p];
+         if (src_.length == 2) break; // we got the full source
+         if (piece != null && piece.role_ == piece_.role_) {
+             if (piece_ !== piece) {
+               if (piece_.color_ == piece.color_) {
+                  const ro_ = piece_.role_, oh_ = piece_.oldlocation_[0], ov_ = piece_.oldlocation_[1], 
+                       nh_ = piece_.location_[0], nv_ = piece_.location_[1];
+                  const ro = piece.role_, oh = (piece.oldlocation_ != null) ? piece.oldlocation_[0] : null, 
+                                          ov = (piece.oldlocation_ != null) ? piece.oldlocation_[1] : null, 
+                        nh = piece.location_[0], nv = piece.location_[1];
+             
+                  for (y in ['R', 'Q']) {
+                    const mro = ['R', 'Q'][y];
+                    if (ro_ == mro) {
+                      var blk_ = false;
+                      if (nv_ == nv) {
+                          const d1 = oh_.charCodeAt(0), d2 = nh.charCodeAt(0);
+                          const mi = (d1 < d2) ? d1 : d2, mx = (d1 < d2) ? d2 : d1
+                          for (var i = mi;  i <= mx; i++) { 
+                               const hv = String.fromCharCode(i) + nv_;
+                               if (Board[hv] != null && Board[hv].role_ != mro ) { blk_ = true; break }
+                          }
+                      } else // end if ov_ == ov
+                      if (nh_ == nh) {
+                          const mi = (ov_ < nv) ? ov_ : nv, mx = (ov_ < nv) ? nv : ov_ 
+                          for (var i = mi;  i <= mx; i++) {
+                               const hv = nh_ + i;
+                               if (Board[hv] != null && Board[hv].role_ != mro ) { blk_ = true; break }
+                          }
+                      } 
+                      if (!blk_ && (nv_ == nv || nh_ == nh)) { 
+                            if (src_.length == 0) {
+                               if (oh_ != nh) src_ = oh_; else src_ = ov_;
+                            } else
+                            if (src_.length == 1) {
+                                   if (src_ == oh_) src_ = src_ + ov_;
+                                   if (src_ == ov_) src_ = oh_ + src_ ;
+                            }
+                      }
+                    } // end ro == 'R'
+                  } // end for mro
+
+                  for (y in ['B', 'Q']) {
+                    const mro = ['B', 'Q'][y];
+                    if (ro_ == mro) {
+                      var blk_ = false;
+                      const d1 = nh.charCodeAt(0), d2 = nh_.charCodeAt(0), diff_h = Math.abs(d1 - d2), diff_v = Math.abs(nv - nv_);
+                      if (diff_h == diff_v) {
+                         const mi = (d1 < d2) ? d1 : d2, mx = (d1 < d2) ? d2 : d1
+                         for (var i=1; i<=diff_h; i++) {
+                             const hv = String.fromCharCode(mi + i) + (parseInt(nv) < parseInt(nv_) ? (parseInt(nv) + i) : (parseInt(nv) - i));
+                             if (Board[hv] != null && Board[hv].role_ != mro ) { blk_ = true; break }
+                         }
+                         if (!blk_) {
+                            if (src_.length == 0) {
+                               if (oh_ != nh) src_ = oh_; else src_ = ov_;
+                            } else
+                            if (src_.length == 1) {
+                                   if (src_ == nh) src_ = src_ + ov_;
+                                   if (src_ == nv) src_ = oh_ + src_ ;
+                            }
+                         } 
+                      }
+                    } // end ro == 'B'
+                  } // end for mro
+
+                  if (ro_ == 'N') {
+                      const d1 = nh.charCodeAt(0), d2 = nh_.charCodeAt(0), diff_h = Math.abs(d1 - d2), diff_v = Math.abs(nv - nv_);
+                      if ((diff_h == 1 && diff_v == 2) || (diff_h == 2 && diff_v == 1)) { 
+                        if (src_.length == 0) {
+                               if (oh_ != nh) src_ = oh_; else src_ = ov_;
+                        } else
+                        if (src_.length == 1) {
+                               if (src_ == nh) src_ = src_ + ov_;
+                               if (src_ == nv) src_ = oh_ + src_ ;
+                        }
+                      }
+                  }
+
+
+                } // end if piece.color
+              } // end if piece != piece
+          } // end if piece null
+       } // end for
+       return src_;
+    }
+
+
+    function getImgSrc(tag) {
+      const piece_path = "/images/Chess_";
+      return piece_path + tag + "45.svg";
+    }
+
+    var LASTPIECE_ = null;
+    // Piece class
+    class Piece {
+       constructor(role, tag, location) {
+          this.image(role, tag, location);              
+       }
+
+       image(role, tag, location, ol = 0, img = 0) { 
+           this.role_ = role;
+           this.color_ = tag;
+           this.location_ = location;
+           if (ol == 0) this.oldlocation_ = null;
+           this.active_ = 1;
+           if (img == 0) this.piece = document.createElement("img");
+           this.piece.id   = role + location;
+           this.piece.src = getImgSrc(tag);
+           if (EXPAND_) {
+              this.piece.className = "piece " + "p_" + reverseLoc(location);
+           } else {
+              this.piece.className = "xpiece " + "px_" + reverseLoc(location);
+           }
+           this.piece.display = "block";
+           this.piece.style = "cursor: pointer";
+           this.piece.addEventListener('mousedown', mouseDown);
+           this.piece.pclass = this;
+        }
+
+       get role() { return this.role_; }
+       get location() { return this.location_; }
+       get oldlocation() { return this.oldlocation_; }
+       get getpiece() { return this.piece; }
+       get color() { return this.color_; }
+  
+       set active(s) {
+          if (s == 0) {
+             this.piece.style.visibility = "hidden";
+             this.active_ = s;
+          }
+       }
+
+       set promote_piece(what) {
+         if (what == "=Q" || what == "(Q)" || what == "Q") {
+          if (this.color_ == 'plt' && this.location_[1] == '7' ) { this.image('Q', 'qlt', this.location_, 1, 1); return } 
+          if (this.color_ == 'pdt' && this.location_[1] == '2' ) { this.image('Q', 'qdt', this.location_, 1, 1); return } 
+         } else
+         if (what == "=R" || what == "(R)" || what == "R") {
+          if (this.color_ == 'plt' && this.location_[1] == '7') { this.image('R', 'rlt', this.location_, 1, 1); return } 
+          if (this.color_ == 'pdt' && this.location_[1] == '2') { this.image('R', 'rdt', this.location_, 1, 1); return } 
+         } else
+         if (what == "=B" || what == "(B)" || what == "B") {
+          if (this.color_ == 'plt' && this.location_[1] == '7') { this.image('B', 'blt', this.location_, 1, 1); return } 
+          if (this.color_ == 'pdt' && this.location_[1] == '2') { this.image('B', 'bdt', this.location_, 1, 1); return } 
+         } else
+         if (what == "=N" || what == "(N)" || what == "N") {
+          if (this.color_ == 'plt' && this.location_[1] == '7') { this.image('N', 'nlt', this.location_, 1, 1); return } 
+          if (this.color_ == 'pdt' && this.location_[1] == '2') { this.image('N', 'ndt', this.location_, 1, 1); return } 
+         } 
+         illegal_move("Illegal move (81)!"); 
+       }
+
+    
+       set move(what) {
+           const location = what.location;
+           const promote = what.promote;
+           const RES = this.assertMove(location);
+           if (RES == ENPASSANT) { 
+                  var len = Benched.length;
+                  this.restype_ = RES;
+                  LASTPIECE_.active = 0;
+                  Benched.push ( LASTPIECE_ );
+                  Board[location] = this;
+                  Board[this.location_] =  null;
+                  Board[LASTPIECE_.location_] =  null;
+                  Undo.push( { type: RES, color: this.color_, piece: this, benched: LASTPIECE_,
+                                oloc: this.location_, nloc: location, ooloc: this.oldlocation_ } )
+           } else
+           if (RES == EATPIECE) { 
+                  var len = Benched.length;
+                  this.restype_ = RES;
+                  Board[location].active = 0;
+                  Benched.push ( Board[location]);
+                  if (promote != null && promote != "") this.promote_piece = promote;
+                  Board[location] = this;
+                  Board[this.location_] =  null;
+                  Undo.push( { type: RES, color: this.color_, piece: this, benched: Benched[Benched.length - 1],
+                                oloc: this.location_, nloc: location, ooloc: this.oldlocation_, promote: promote } )
+           } else
+           if (RES == CASTLELONG) { 
+                      var goodcastle_ = false;
+                      for (var p in Board) { 
+                         const Piece = Board[p];
+                         if (Piece == null) continue;
+                         if (Piece.role_ != 'R' || this.role_ != 'K') continue;
+                         if (Piece.oldlocation_ == null && this.oldlocation_ == null) {
+                                              // Rook and King have not moved before
+                             if (this.color_ == "klt") { 
+                                 if (location == "c1") {
+                                   if (Piece.location_ == "a1" && Piece.color == "rlt") {
+                                     if (EXPAND_) {
+                                        Piece.piece.className = "piece p_" + reverseLoc("d1");
+                                     } else {
+                                        Piece.piece.className = "xpiece px_" + reverseLoc("d1");
+                                     }
+                                     this.restype_ = RES;
+                                     Piece.piece.display = "block";
+                                     Piece.oldlocation_ = "a1";
+                                     Piece.location_ = "d1";
+                                     Board[location] = this;
+                                     Board[this.location_] =  null;
+                                     Board["d1"] = Piece;
+                                     Board["a1"] = null;
+                                     Undo.push( { type: RES, color: this.color_, piece: this, rook: Piece,
+                                                 oloc: this.location_, nloc: location, ooloc: this.oldlocation_ } )
+                                     goodcastle_ = true;
+                                     break;
+                                   }
+                                 }
+                              } else 
+                              if (this.color_ == "kdt") { // dark
+                                 if (location == "c8") {
+                                   if (Piece.location_ == "a8" && Piece.color == "rdt") {
+                                     if (EXPAND_) {
+                                        Piece.piece.className = "piece p_" + reverseLoc("d8");
+                                     } else {
+                                        Piece.piece.className = "xpiece px_" + reverseLoc("d8");
+                                     }
+                                     this.restype_ = RES;
+                                     Piece.piece.display = "block";
+                                     Piece.oldlocation_ = "a8";
+                                     Piece.location_ = "d8";
+                                     Board[location] = this;
+                                     Board[this.location_] =  null;
+                                     Board["d8"] = Piece;
+                                     Board["a8"] = null;
+                                     Undo.push( { type: RES, color: this.color_, piece: this, rook: Piece,
+                                                 oloc: this.location_, nloc: location, ooloc: this.oldlocation_ } )
+                                     goodcastle_ = true;
+                                     break;
+                                   }
+                                 }
+                              }     
+                          }
+                       }
+                       if (!goodcastle_) illegal_move("Not able to find proper pieces for long castling!");
+           } else
+           if (RES == CASTLESHORT) { 
+                      var goodcastle_ = false;
+                      for (var p in Board) {
+                         const Piece = Board[p];    
+                         if (Piece == null) continue;
+                         if (Piece.role_ != 'R' || this.role_ != 'K') continue;
+                         if (Piece.oldlocation_ == null && this.oldlocation_ == null) {
+                                              // Rook and King have not moved before
+                             if (this.color_ == "klt") {
+                                 if (location == "g1") {
+                                   if (Piece.location_ == "h1" && Piece.color == "rlt") {
+                                     if (EXPAND_) {
+                                        Piece.piece.className = "piece p_" + reverseLoc("f1");
+                                     } else {
+                                        Piece.piece.className = "xpiece px_" + reverseLoc("f1");
+                                     }
+                                     this.restype_ = RES;
+                                     Piece.piece.display = "block";
+                                     Piece.oldlocation_ = "h1";
+                                     Piece.location_ = "f1";
+                                     Board[location] = this;
+                                     Board[this.location_] =  null;
+                                     Board["f1"] = Piece;
+                                     Board["h1"] = null;
+                                     Undo.push( { type: RES, color: this.color_, piece: this, rook: Piece,
+                                                 oloc: this.location_, nloc: location, ooloc: this.oldlocation_ } )
+                                     goodcastle_ = true;
+                                     break;
+                                   }
+                                 }
+                              } else
+                              if (this.color_ == "kdt") { // dark
+                                 if (location == "g8") {
+                                   if (Piece.location_ == "h8" && Piece.color == "rdt") {
+                                     if (EXPAND_) {
+                                       Piece.piece.className = "piece p_" + reverseLoc("f8");
+                                     } else {
+                                       Piece.piece.className = "xpiece px_" + reverseLoc("f8");
+                                     }
+                                     this.restype_ = RES;
+                                     Piece.piece.display = "block";
+                                     Piece.oldlocation_ = "h8";
+                                     Piece.location_ = "f8";
+                                     Board[location] = this;
+                                     Board[this.location_] =  null;
+                                     Board["f8"] = Piece;
+                                     Board["h8"] = null;
+                                     Undo.push( { type: RES, color: this.color_, piece: this, rook: Piece,
+                                                 oloc: this.location_, nloc: location, ooloc: this.oldlocation_ } )
+                                     goodcastle_ = true;
+                                     break;
+                                   }
+                                 }
+                              }
+                          }
+                       }
+                       if (!goodcastle_) illegal_move("Not able to find proper pieces for short castling!");
+           } else
+           if (RES == GOODMOVE) { 
+                  if (promote != null && promote != "") this.promote_piece = promote;
+                  this.restype_ = RES;
+                  Board[location] = this; 
+                  Board[this.location_] =  null;
+                  Undo.push( { type: RES, color: this.color_, piece: this, oloc: this.location_, nloc: location, ooloc: this.oldlocation_ } )
+           } else {
+                 illegal_move("No result from assertion!");
+           }
+           if (EXPAND_) {
+              this.piece.className = "piece " + "p_" + reverseLoc(location);
+           } else {
+              this.piece.className = "xpiece " + "px_" + reverseLoc(location);
+           }
+           this.piece.display = "block";
+           this.oldlocation_ = this.location_;
+           this.location_ = location;
+           LASTPIECE_ = this;
+           const threat = this.evaluate_king_threat(RES);
+           if (threat) { log( "King is in danger (" + threat + ")!"); }
+           return RES;
+       }
+
+       get_location(obj) {
+         const oldlocation = obj.oldlocation;
+         const oh = (oldlocation != null) ? oldlocation[0].charCodeAt(0) : null;
+         const ov = (oldlocation != null) ? oldlocation[1] : null;
+         return { nh: obj.location[0].charCodeAt(0 ), nv: parseInt(obj.location[1]), oh: oh, ov: ov };
+       }
+
+       threat_by_bishop(Piece, KD_loc, KL_loc, ploc, diff_kdh, diff_kdv, diff_klh, diff_klv, Queen = 0) {
+            var threat = 0;
+            var colorl = (Queen) ? 'qlt' : 'blt';
+            var colord = (Queen) ? 'qdt' : 'bdt';
+            if (diff_kdh == diff_kdv && Piece.color_ == colorl) {  var bthreat = 1;
+                 for (var v = 1; v < diff_kdv; v++) {
+                     const nv = (KD_loc.nv < ploc.nv) ? (KD_loc.nv + v) : (KD_loc.nv - v);
+                     const dist = (KD_loc.nh < ploc.nh) ? (KD_loc.nh + v) : (KD_loc.nh - v);
+                     const nh = String.fromCharCode(dist);
+                     if (Board[nh + nv]  != null)  { bthreat = 0; break }
+                 }
+                 threat = bthreat;
+            }
+            if (diff_klh == diff_klv && Piece.color_ == colord) {  var bthreat = 1;
+                 for (var v = 1; v < diff_klv; v++) {
+                     const nv = (KL_loc.nv < ploc.nv) ? (KL_loc.nv + v) : (KL_loc.nv - v);
+                     const dist = (KL_loc.nh < ploc.nh) ? (KL_loc.nh + v) : (KL_loc.nh - v);
+                     const nh = String.fromCharCode(dist);
+                     if (Board[nh + nv]  != null)  { bthreat = 0; break }
+                 }
+                 threat = bthreat;
+            }
+             _CHECK_KING_ = _CHECK_KING_ || (threat && this.color_.slice(-2) == Piece.color_.slice(-2)) 
+             threat = _CHECK_KING_ ? 0 : threat; // not endangering itself
+             return  threat;
+       }
+
+       threat_by_rook(Piece, KD_loc, KL_loc, ploc, diff_kdh, diff_kdv, diff_klh, diff_klv, Queen = 0) {
+             var nh = null, nv = null, threat = 0;
+             var colorl = (Queen) ? 'qlt' : 'rlt';
+             var colord = (Queen) ? 'qdt' : 'rdt';
+             if (diff_kdh == 0 && diff_kdv > 0 && Piece.color_ == colorl ) { var rthreat = 1;
+                 for (var v = 1; v < diff_kdv; v++) {
+                     const nv = (KD_loc.nv < ploc.nv) ? (KD_loc.nv + v) : (KD_loc.nv - v);
+                     const nh = String.fromCharCode(KD_loc.nh);
+                     if (Board[nh + nv]  != null)  { rthreat = 0; break }
+                 }
+             } else
+             if (diff_kdv == 0 && diff_kdh > 0 && Piece.color_ == colorl) { var rthreat = 1;
+                 for (var h = 1; h < diff_kdh; h++) {
+                     const dist = (KD_loc.nh < ploc.nh) ? (KD_loc.nh + h) : (KD_loc.nh - h);
+                     const  nh = String.fromCharCode(dist);
+                     if (Board[nh + KD_loc.nv]  != null)  { rthreat = 0; break }
+                 }
+                 threat = rthreat;
+             }
+             if (diff_klh == 0 && diff_klv > 0 && Piece.color_ == colord) { var rthreat = 1; 
+                 for (var v = 1; v < diff_klv; v++) {
+                     const nv = (KL_loc.nv < ploc.nv) ? (KL_loc.nv + v) : (KL_loc.nv - v);
+                     const nh = String.fromCharCode(KL_loc.nh);
+                     if (Board[nh + nv]  != null)  { rthreat = 0; break }
+                 }
+                 threat = rthreat;
+             }  else
+             if (diff_klv == 0 && diff_klh > 0 && Piece.color_ == colord) { var rthreat = 1;
+                 for (var h = 1; h < diff_klh; h++) {
+                     const dist = (KL_loc.nh < ploc.nh) ? (KL_loc.nh + h) : (KL_loc.nh - h);
+                     const  nh = String.fromCharCode(dist); 
+                     if (Board[nh  + KL_loc.nv]  != null)  { rthreat = 0; break }
+                 }
+                 threat = rthreat;
+             }
+             _CHECK_KING_ = _CHECK_KING_ || (threat && this.color_.slice(-2) == Piece.color_.slice(-2)) 
+             threat = _CHECK_KING_ ? 0 : threat; // not endangering itself
+             return threat;
+       }
+
+       threat_by_knight(Piece, KD_loc, KL_loc, ploc, diff_kdh, diff_kdv, diff_klh, diff_klv) {
+             var nthreat = 0;
+             if (diff_kdv == 2 && diff_kdh == 1 && Piece.color_ == 'nlt') {
+                 const dist = (KD_loc.nh < ploc.nh) ? (KD_loc.nh + 1) : (KD_loc.nh - 1);
+                 const nv = (KD_loc.nv < ploc.nv) ? (KD_loc.nv + 2) : (KD_loc.nv - 2);
+                 const nh = String.fromCharCode(dist);
+                 if (Board[nh + nv]  != null)  { nthreat = 1; }
+             } else
+             if (diff_kdh == 2 && diff_kdv == 1 && Piece.color_ == 'nlt') {
+                 const nv = (KD_loc.nv < ploc.nv) ? (KD_loc.nv + 1) : (KD_loc.nv - 1);
+                 const dist = (KD_loc.nh < ploc.nh) ? (KD_loc.nh + 2) : (KD_loc.nh - 2);
+                 const nh = String.fromCharCode(dist);
+                 if (Board[nh + nv]  != null)  { nthreat = 1; }
+             }
+             if (diff_klv == 2 && diff_klh == 1 && Piece.color_ == 'ndt') {
+                 const dist = (KL_loc.nh < ploc.nh) ? (KL_loc.nh + 1) : (KL_loc.nh - 1);
+                 const nv = (KL_loc.nv < ploc.nv) ? (KL_loc.nv + 2) : (KL_loc.nv - 2);
+                 const nh = String.fromCharCode(dist);
+                 if (Board[nh + nv]  != null)  { nthreat = 1; }
+             } else
+             if (diff_klh == 2 && diff_klv == 1 && Piece.color_ == 'ndt') {
+                 const nv = (KL_loc.nv < ploc.nv) ? (KL_loc.nv + 1) : (KL_loc.nv - 1);
+                 const dist = (KL_loc.nh < ploc.nh) ? (KL_loc.nh + 2) : (KL_loc.nh - 2);
+                 const nh = String.fromCharCode(dist);
+                 if (Board[nh + nv]  != null)  { nthreat = 1; }
+             }
+             _CHECK_KING_ = _CHECK_KING_ || (nthreat && this.color_.slice(-2) == Piece.color_.slice(-2)) 
+             nthreat = _CHECK_KING_ ? 0 : nthreat; // not endangering itself
+             return nthreat;
+       }
+
+       evaluate_king_threat(RES) {
+          var KD = null, KL = null;
+          // find the kings
+          for (var p in Board) {
+               const Piece = Board[p];
+               if (Piece != null) {
+                  if (Piece.role == 'K') {
+                     if (Piece.color_ == 'klt') {
+                         KL = Piece; 
+                     } else
+                     if (Piece.color_ == 'kdt') {
+                         KD = Piece; 
+                     }
+                  } 
+               }   
+          } 
+          var KDR_loc = null,  KLR_loc = null;
+          if (RES == CASTLESHORT) {
+              const KDR = new Piece("K", "kdt", "f8");
+              const KLR = new Piece("K", "klt", "f1");
+              KDR_loc = this.get_location(KDR); 
+              KLR_loc = this.get_location(KLR);
+          } else
+          if (RES == CASTLELONG) {
+              const KDR = new Piece("K", "kdt", "d8");
+              const KLR = new Piece("K", "klt", "d1");
+              KDR_loc = this.get_location(KDR); 
+              KLR_loc = this.get_location(KLR);
+          }
+          const KD_loc = this.get_location(KD); const KL_loc = this.get_location(KL);
+          // evaluate the pieces
+          var threat = 0;
+          _CHECK_KING_ = false;
+          for (var p in Board) {
+               const Piece = Board[p];
+               // if (Piece === this) continue;
+               if (Piece != null) {
+                  const ploc = this.get_location(Piece);
+                  const diff_kdh = Math.abs(KD_loc.nh - ploc.nh); const diff_kdv = Math.abs(KD_loc.nv - ploc.nv);
+                  const diff_klh = Math.abs(KL_loc.nh - ploc.nh); const diff_klv = Math.abs(KL_loc.nv - ploc.nv);
+                  var diff_kdrh = 0, diff_kdrv = 0, diff_klrh = 0, diff_klrv = 0;
+                  if (KDR_loc != null && KLR_loc != null) {
+                    diff_kdrh = Math.abs(KDR_loc.nh - ploc.nh); diff_kdrv = Math.abs(KDR_loc.nv - ploc.nv);
+                    diff_klrh = Math.abs(KLR_loc.nh - ploc.nh); diff_klrv = Math.abs(KLR_loc.nv - ploc.nv);
+                  }
+                  if (Piece.role == 'K') {
+                      var kthreat = 0;
+                      if (Piece.color_ == 'klt') {
+                         if ((diff_kdh == 0 && diff_kdv == 1) || (diff_kdv == 0 && diff_kdh == 1)) { kthreat = 1; }
+                         if ((diff_kdh ==  diff_kdv && diff_kdv == 1)) { threat = 1; }
+                      } else {
+                         if ((diff_klh == 0 && diff_klv == 1) || (diff_klv == 0 && diff_klh == 1)) { kthreat = 1; }
+                         if ((diff_klh ==  diff_klv && diff_klv == 1)) { threat = 1; }
+                      } 
+                      _CHECK_KING_ = _CHECK_KING_ || (kthreat && this.color_.slice(-2) == Piece.color_.slice(-2)) 
+                      kthreat = _CHECK_KING_ ? 0 : kthreat; // not endangering itself
+                      threat = (kthreat) ? -1 : threat;
+                     
+                  } else
+                  if (Piece.role == 'Q') {
+                      const bthreat = this.threat_by_bishop(Piece, KD_loc, KL_loc, ploc, diff_kdh, diff_kdv, diff_klh, diff_klv, 1);
+                      const rthreat = this.threat_by_rook(Piece, KD_loc, KL_loc, ploc, diff_kdh, diff_kdv, diff_klh, diff_klv, 1);
+                      threat = (bthreat || rthreat) ? 2 : threat;
+                      if (KDR_loc != null && KLR_loc != null) { // check castle threat
+                        if (this.color_ == 'klt') {  diff_kdrh = 10; diff_kdrv = 20; }
+                        if (this.color_ == 'kdt') {  diff_klrh = -10; diff_klrv = -20; }
+                        const bthreat1 = this.threat_by_bishop(Piece, KDR_loc, KLR_loc, ploc, diff_kdrh, diff_kdrv, diff_klrh, diff_klrv, 1);
+                        const rthreat1 = this.threat_by_rook(Piece, KDR_loc, KLR_loc, ploc, diff_kdrh, diff_kdrv, diff_klrh, diff_klrv, 1);
+                        threat = (bthreat1 || rthreat1) ? -2 : threat;
+                      }
+                  } else
+                  if (Piece.role == 'B') {
+                      const bthreat = this.threat_by_bishop(Piece, KD_loc, KL_loc, ploc, diff_kdh, diff_kdv, diff_klh, diff_klv);
+                      threat = (bthreat) ? 3 : threat;
+                      if (KDR_loc != null && KLR_loc != null) { // check castle threat
+                        if (this.color_ == 'klt') {  diff_kdrh = 10; diff_kdrv = 20; }
+                        if (this.color_ == 'kdt') {  diff_klrh = -10; diff_klrv = -20; }
+                        const bthreat1 = this.threat_by_bishop(Piece, KDR_loc, KLR_loc, ploc, diff_kdrh, diff_kdrv, diff_klrh, diff_klrv);
+                        threat = (bthreat1) ? -3 : threat;
+                      }
+                  } else
+                  if (Piece.role == 'R') {
+                      const rthreat = this.threat_by_rook(Piece, KD_loc, KL_loc, ploc, diff_kdh, diff_kdv, diff_klh, diff_klv);
+                      threat = (rthreat) ? 4 : threat;
+                      if (KDR_loc != null && KLR_loc != null) {  // check castle threat
+                        if (this.color_ == 'klt') {  diff_kdrh = 10; diff_kdrv = 20; }
+                        if (this.color_ == 'kdt') {  diff_klrh = -10; diff_klrv = -20; }
+                        const rthreat1 = this.threat_by_rook(Piece, KDR_loc, KLR_loc, ploc, diff_kdrh, diff_kdrv, diff_klrh, diff_klrv);
+                        threat = (rthreat1) ? -4 : threat;
+                      }
+                  } else
+                  if (Piece.role == 'N') {
+                      const nthreat = this.threat_by_knight(Piece, KD_loc, KL_loc, ploc, diff_kdh, diff_kdv, diff_klh, diff_klv);
+                      threat = (nthreat) ? 5 : threat;
+                      if (KDR_loc != null && KLR_loc != null) {  // check castle threat
+                        if (this.color_ == 'klt') {  diff_kdrh = 10; diff_kdrv = 20; }
+                        if (this.color_ == 'kdt') {  diff_klrh = -10; diff_klrv = -20; }
+                        const nthreat1 = this.threat_by_knight(Piece, KDR_loc, KLR_loc, ploc, diff_kdrh, diff_kdrv, diff_klrh, diff_klrv);
+                        threat = (nthreat1) ? -5 : threat;
+                      }
+                  } else
+                  if (Piece.role == 'P') {
+                     var pthreat = 0, pthreat1 = 0;
+                     if (diff_klh == 1 && diff_klv == 1) {
+                       if (KL_loc.nv < ploc.nv && Piece.color_ == 'pdt') { pthreat = 1; }
+                     }
+                     if (diff_kdh == 1 && diff_kdv == 1) {
+                       if (KD_loc.nv > ploc.nv && Piece.color_ == 'plt') { pthreat = 1; }
+                     }
+                     _CHECK_KING_ = _CHECK_KING_ || (pthreat && this.color_.slice(-2) == Piece.color_.slice(-2)) 
+                     pthreat = _CHECK_KING_ ? 0 : pthreat; // not endangering itself
+                     threat = (pthreat) ? 6 : threat;
+                     if (KDR_loc != null && KLR_loc != null) {  // check castle threat
+                        if (this.color_ == 'klt') {  diff_kdrh = 10; diff_kdrv = 20; }
+                        if (this.color_ == 'kdt') {  diff_klrh = -10; diff_klrv = -20; }
+                       if (diff_klrh == 1 && diff_klrv == 1) {
+                         if (KLR_loc.nv < ploc.nv && Piece.color_ == 'pdt') { pthreat1 = 1; }
+                       }
+                       if (diff_kdrh == 1 && diff_kdrv == 1) {
+                         if (KDR_loc.nv > ploc.nv && Piece.color_ == 'plt') { pthreat1 = 1; }
+                       }
+                       threat = (pthreat1) ? -6 : threat;
+                     }
+                  } 
+                  if (threat) { illegal_move("Move is endangering its own king (" + threat + ")!"); }
+               }
+          }
+          return threat;
+       }
+
+       take_piece(location, color, code) {
+           if (Board[location] != null ) { // Check if something to eat!
+                 var board_ = Board[location];
+                 if (board_.color_.match(color)) {
+                     if (board_.role == 'K') {
+                       illegal_move("Cannot eat king!");
+                     } else
+                     return EATPIECE;
+                 } 
+           }
+           illegal_move("Illegal move " + code + "!");  
+       }
+
+       assertMove(location) {
+         const locations = { oh: this.location_[0], ov: parseInt(this.location_[1]), 
+                             nh: location[0],       nv: parseInt(location[1]) }
+         if (this.role_ == "K") {
+            const this_nh = locations.nh.charCodeAt(0);
+            const this_oh = locations.oh.charCodeAt(0);
+            const diff_v = Math.abs(locations.ov - locations.nv);
+            const diff_h = Math.abs(this_nh - this_oh);
+            if ((diff_v == 0 && diff_h == 1) ||
+                (diff_h == 0 && diff_v == 1) ||
+                (diff_v == diff_h && diff_v == 1)) {
+                if (Board[location] != null ) { // Check if something to eat!
+                      if (this.color_ == "klt") {
+                         return this.take_piece(location, /dt$/, '22');
+                      } else
+                      if (this.color_ == "kdt") {
+                         return this.take_piece(location, /lt$/, '21');
+                      }
+                } else { 
+                  const oh = this.location_;
+                  const nh = locations.nh, nv = locations.nv
+                  const nh1 = String.fromCharCode(this_nh + 1);
+                  const nh2 = String.fromCharCode(this_nh - 1);
+                  const nv1 = locations.nv + 1;
+                  const nv2 = locations.nv - 1;
+                  if (
+                      (Board[nh1 + nv1] != null && Board[nh1 + nv1].role_.match(/[Kk]/) && this.location_ != nh1 + nv1)  ||
+                      (Board[nh1 + nv2] != null && Board[nh1 + nv2].role_.match(/[Kk]/)  && this.location_ != nh1 + nv2) ||
+                      (Board[nh2 + nv1] != null && Board[nh2 + nv1].role_.match(/[Kk]/) && this.location_ != nh2 + nv1) ||
+                      (Board[nh2 + nv2] != null && Board[nh2 + nv2].role_.match(/[Kk]/) && this.location_ != nh2 + nv2) ||
+                      (Board[nh + nv1] != null && Board[nh + nv1].role_.match(/[Kk]/) && this.location_ != nh + nv1) ||
+                      (Board[nh + nv2] != null && Board[nh + nv2].role_.match(/[Kk]/) && this.location_ != nh + nv2) ||
+                      (Board[nh1 + nv] != null && Board[nh1 + nv].role_.match(/[Kk]/) && this.location_ != nh1 + nv) ||
+                      (Board[nh2 + nv] != null && Board[nh2 + nv].role_.match(/[Kk]/) && this.location_ != nh2 + nv)
+                  ) {
+                      illegal_move("King faces king!");
+                  }
+                  return GOODMOVE; 
+                }
+            } else // consider castling
+            if (diff_v == 0 && diff_h == 2) {
+                 if (this_oh < this_nh) {
+                     const oh1 = String.fromCharCode(this_oh + 1);
+                     const oh2 = String.fromCharCode(this_oh + 2);
+                     if ((Board[oh1 + locations.nv] == null) &&
+                         (Board[oh2 + locations.nv] == null) &&
+                           this.oldlocation_ == null ) {
+                        if (_CHECK_KING_) illegal_move("King is under check!");
+                        if ((oh1 + locations.nv != 'f1' && oh2 + locations.nv != 'g1') &&
+                            (oh1 + locations.nv != 'f8' && oh2 + locations.nv != 'g8')) {
+                              illegal_move("Illegal move (50k)!");
+                        };
+log("ok now short castling ...");
+                        return CASTLESHORT;
+                     } else { illegal_move("Illegal move (50)!"); }
+                 } else {
+                     const oh1 = String.fromCharCode(this_oh - 1);
+                     const oh2 = String.fromCharCode(this_oh - 2);
+                     if ((Board[oh1 + locations.nv] == null) &&
+                         (Board[oh2 + locations.nv] == null) &&
+                          this.oldlocation_ == null) {
+                       if (_CHECK_KING_) illegal_move("King is under check!");
+                       if ((oh1 + locations.nv != 'd1' && oh2 + locations.nv != 'c1') &&
+                           (oh1 + locations.nv != 'd8' && oh2 + locations.nv != 'c8')) {
+                              illegal_move("Illegal move (51k)!");
+                       };
+                       return CASTLELONG;
+                     } else { illegal_move("Illegal move (51)!"); }
+                 }
+            }
+            else { illegal_move("Illegal move (20)!"); }
+         } else // Queen
+         if (this.role_ == "Q") {
+            const this_nh = locations.nh.charCodeAt(0);
+            const this_oh = locations.oh.charCodeAt(0);
+            const diff_v = Math.abs(locations.ov - locations.nv);
+            const diff_h = Math.abs(this_nh - this_oh);
+            if ((diff_v == 0 && diff_h > 0) ||
+                (diff_h == 0 && diff_v > 0) || 
+                (diff_v == diff_h && diff_v != 0)) {
+
+                // check bishop-like obstruction
+                if (diff_v == diff_h && diff_v != 0)
+                for (let i=1; i < diff_v; i++) {
+                  var oh = null, ov = null;
+                  if (this_oh < this_nh) {
+                     oh = String.fromCharCode(this_oh + i);
+                  } else {
+                     oh = String.fromCharCode(this_oh - i);
+                  }
+                  if (locations.ov < locations.nv) {
+                     ov = locations.ov + i;
+                  } else {
+                     ov = locations.ov - i;
+                  }
+                  if (Board[oh + ov] != null) {
+                     illegal_move("Illegal move (33)!");
+                  }
+                }
+
+                // check root-like obstruction
+                if ((diff_v == 0 && diff_h > 0) ||
+                   (diff_h == 0 && diff_v > 0))
+                for (let i=1; i < ( (diff_v < diff_h) ? diff_h : diff_v ); i++) {
+                  var oh = String.fromCharCode(this_oh), ov = locations.ov;
+                  if (this_oh < this_nh) {
+                     oh = String.fromCharCode(this_oh + i);
+                  } else
+                  if (this_oh >this_nh) {
+                     oh = String.fromCharCode(this_oh - i);
+                  } else
+                  if (locations.ov < locations.nv) {
+                     ov = locations.ov + i;
+                  } else
+                  if (locations.ov > locations.nv) {
+                     ov = locations.ov - i;
+                  } else {
+                     illegal_move("Illegal move (34)!");
+                  }
+                  if (Board[oh + ov] != null) {
+                     illegal_move("Illegal move (35)!");
+                  }
+                }
+
+
+                if (Board[location] != null ) { // Check if something to eat!
+                      if (this.color_ == "qlt") {
+                         return this.take_piece(location, /dt$/, '18');
+                      } else
+                      if (this.color_ == "qdt") {
+                         return this.take_piece(location, /lt$/, '19');
+                      }
+                } else {
+                       return GOODMOVE;
+                }
+            }
+            else { illegal_move("Illegal move (17)!"); }
+         } else // Rook
+         if (this.role_ == "R") {
+            const this_nh = locations.nh.charCodeAt(0);
+            const this_oh = locations.oh.charCodeAt(0);
+            const diff_v = Math.abs(locations.ov - locations.nv);
+            const diff_h = Math.abs(this_nh - this_oh);
+            if ((diff_v == 0 && diff_h > 0) ||
+                (diff_h == 0 && diff_v > 0)) {
+
+                // check rook obstruction
+                for (let i=1; i < ( (diff_v < diff_h) ? diff_h : diff_v ); i++) {
+                  var oh = String.fromCharCode(this_oh), ov = locations.ov;
+                  if (this_oh < this_nh) {
+                     oh = String.fromCharCode(this_oh + i);
+                  } else 
+                  if (this_oh >this_nh) {
+                     oh = String.fromCharCode(this_oh - i);
+                  } else
+                  if (locations.ov < locations.nv) {
+                     ov = locations.ov + i;
+                  } else
+                  if (locations.ov > locations.nv) {
+                     ov = locations.ov - i;
+                  } else {
+                     illegal_move("Illegal move (31)!");
+                  }
+                  if (Board[oh + ov] != null) {
+                     illegal_move("Illegal move (32)!");
+                  }
+                }
+                if (Board[location] != null ) { // Check if something to eat!
+                      if (this.color_ == "rlt") {
+                         return this.take_piece(location, /dt$/, '15');
+                      } else
+                      if (this.color_ == "rdt") {
+                         return this.take_piece(location, /lt$/, '16');
+                      }
+                } else {
+                       return GOODMOVE;
+                }
+            }
+            else { illegal_move("Illegal move (14)!"); }
+         } else // Bishop
+         if (this.role_ == "B") {
+            const this_nh = locations.nh.charCodeAt(0);
+            const this_oh = locations.oh.charCodeAt(0);
+            const aha1 = String.fromCharCode(this_oh);
+            const aha2 = String.fromCharCode(this_nh);
+            const diff_v = Math.abs(locations.ov - locations.nv);
+            const diff_h = Math.abs(this_nh - this_oh);
+            if (diff_v == diff_h && diff_v != 0) {
+                // check bishop obstruction
+                for (let i=1; i < diff_v; i++) {
+                  var oh = null, ov = null;
+                  if (this_oh < this_nh) {
+                     oh = String.fromCharCode(this_oh + i);
+                  } else {
+                     oh = String.fromCharCode(this_oh - i);
+                  }
+                  if (locations.ov < locations.nv) {
+                     ov = locations.ov + i;
+                  } else {
+                     ov = locations.ov - i;
+                  }
+                  if (Board[oh + ov] != null) {
+                     illegal_move("Illegal move (31)!"); 
+                  }
+                }
+                if (Board[location] != null ) { // Check if something to eat!
+                      if (this.color_ == "blt") {
+                         return this.take_piece(location, /dt$/, '12');
+                      } else
+                      if (this.color_ == "bdt") {
+                         return this.take_piece(location, /lt$/, '13');
+                      }
+                } else {
+                       return GOODMOVE;
+                }
+            } 
+            else { illegal_move("Illegal move (11)!"); }
+
+         } else // if Knight
+         if (this.role_ == "N") {
+            const this_nh = locations.nh.charCodeAt(0);
+            const this_oh = locations.oh.charCodeAt(0);
+            if (locations.ov + 2 == locations.nv || 
+                locations.ov == locations.nv + 2) {
+                if (this_nh == this_oh + 1 || this_nh + 1 == this_oh) {
+                   if (Board[location] != null ) { // Check if something to eat!
+                      if (this.color_ == "nlt") {
+                         return this.take_piece(location, /dt$/, '8');
+                      } else 
+                      if (this.color_ == "ndt") {
+                         return this.take_piece(location, /lt$/, '9');
+                      }
+                   } else {
+                       return GOODMOVE;
+                   }
+                } else { return this.take_piece(location, "na", "5"); }
+            } else
+            if (this_nh + 2 == this_oh || 
+                this_nh == this_oh + 2) {
+                if (locations.nv == locations.ov + 1 || locations.nv + 1 == locations.ov) {
+                   if (Board[location] != null ) { // Check if something to eat!
+                      if (this.color_ == "nlt") {
+                         return this.take_piece(location, /dt$/, '10');
+                      } else 
+                      if (this.color_ == "ndt") {
+                         return this.take_piece(location, /lt$/, '11');
+                      }
+                   } else {
+                       return GOODMOVE;
+                   }
+                } else { return this.take_piece(location, "na", "6"); }
+            } 
+            else { return this.take_piece(location, "na", "7"); }
+
+         } else // if Pawn
+         if (this.role_ == "P") {
+             if (locations.oh == locations.nh) {
+               if (this.color_ == "plt") {
+                  if (( locations.ov == 2 && ( locations.nv == 3 || locations.nv == 4 ))) {
+                     // check obstruction
+                     if (locations.nv == 3 && Board[locations.oh + 3] != null) {
+                          illegal_move("Illegal move (40)!");
+                     } else
+                     if (locations.nv == 4 && ( Board[locations.oh + 3] != null ||
+                                                Board[locations.oh + 4] != null )) {
+                          illegal_move("Illegal move (41)!");
+                     }
+                     return GOODMOVE;
+                  } else if (locations.ov >= 3 && locations.ov + 1 == locations.nv && locations.nv <= 8) {
+                     if ( Board[locations.oh + locations.nv] != null) {
+                          illegal_move("Illegal move (42)!");
+                     }
+                     return GOODMOVE;
+                  } else { 
+                     illegal_move("Illegal pawn move (42a)!"); 
+                  }
+                } else {
+                  if (( locations.ov == 7 && ( locations.nv == 6 || locations.nv == 5 ))) {
+                     // check obstruction
+                     if (locations.nv == 6 && Board[locations.oh + 6] != null) {
+                          illegal_move("Illegal move (43)!");
+                     } else
+                     if (locations.nv == 5 && ( Board[locations.oh + 6] != null ||
+                                                Board[locations.oh + 5] != null )) {
+                          illegal_move("Illegal move (44)!");
+                     }
+                     return GOODMOVE;
+                  } else if (locations.ov <= 6 && locations.ov - 1 == locations.nv && locations.nv >= 1) {
+                     if ( Board[locations.oh + locations.nv] != null) {
+                          illegal_move("Illegal move (45)!");
+                     }
+                     return GOODMOVE;
+                  } else { 
+                    illegal_move("Illegal pawn move (46)!"); 
+                  }
+                }
+             } else { // (locations.oh != locations.nh) -- diagonal means eat
+                 const this_nh = locations.nh.charCodeAt(0);
+                 const this_oh = locations.oh.charCodeAt(0);
+                 const diff_h = Math.abs(this_nh - this_oh); 
+                 const diff_v = Math.abs(locations.ov - locations.nv);
+                 if (diff_h > 1 || diff_v > 1) { illegal_move("Illegl pawn move (47)!"); }
+                 if (Board[location] != null) { // something to eat?
+                   if (this.color_ == "plt") {
+                      if (locations.ov < locations.nv) { 
+                        return this.take_piece(location, /dt$/,'48');
+                      } else { illegal_move("Illegal move(54)"); }
+                    } else {
+                      if (locations.ov > locations.nv) { 
+                         return this.take_piece(location, /lt$/,'49');
+                      } else { illegal_move("Illegal move(55)"); }
+                 
+                    }
+                 } else { // en passant?
+                    log("en passant!!!");
+                    if (LASTPIECE_ != null) {
+                        const that = LASTPIECE_;
+                        const that_location = { nh: that.location_[0], nv: parseInt(that.location[1]),
+                                                oh: that.oldlocation[0], ov: parseInt(that.oldlocation[1]) }
+                        const this_nh = locations.nh.charCodeAt(0);
+                        const this_oh = locations.oh.charCodeAt(0);
+                        const that_nh = that_location.nh.charCodeAt(0);
+                        const that_oh = that_location.oh.charCodeAt(0);
+                        const diff_v = Math.abs(that_location.ov - that_location.nv);
+                        const diff_h = Math.abs(that_nh - this_nh);
+                        if (that_oh != that_nh || that.role != 'P' || 
+                            diff_v != 2 || diff_h != 0 || that_location.nv != locations.ov )
+                                { illegal_move("Illegal move(53)"); }
+                
+                        if (this.color_ == "plt") {
+                            if (locations.ov < locations.nv) { 
+                                return ENPASSANT;
+                            } else { illegal_move("Illegal move(56)"); }
+                        } else {
+                            if (locations.ov > locations.nv) { 
+                                return ENPASSANT;
+                             } else { illegal_move("Illegal move(57)"); }
+                        }
+                    } else {
+                       illegal_move("Illegal pawn move (52)!"); 
+                    }
+                 }
+             }
+         }
+         return UNMOVE; 
+        }
+    }  // end Piece class
+
+    // Get King pieces
+    var Board = {}, Benched = [], Undo = [];
+
+    function takeBack() {
+      if (FETCHEDGAME_) return;
+       takeitBack();
+       if (ENGINEGAME_) takeitBack();
+    }
+
+    function takeitBack() { 
+      undoitMove(); 
+      MOVECOUNT_ = MOVECOUNT_ - ((SIDETOMOVE_ == WHITE ) ? 0 : 1);
+      for (var s = 1; s <=5; s++) {
+         if (chessgame.lastChild) {
+            chessgame.removeChild(chessgame.lastChild);
+         }
+      } 
+      chess_castle.play();
+    }
+
+    function undoitMove(switchside = true) {
+       if (Undo.length ==0 ) return;
+       var move = Undo[Undo.length - 1], undone = false; 
+       if (move.type == GOODMOVE) {
+            piece = move.piece;
+            Board[move.oloc] =  piece;
+            Board[move.nloc] =  null;
+            piece.piece.className = (EXPAND_) ? "piece p_" + reverseLoc(move.oloc) : "xpiece px_" + reverseLoc(move.oloc);
+            piece.oldlocation_ = move.ooloc;
+            piece.location_ = move.oloc;
+            if (move.promote) { const color = piece.color_.match(/lt$/);
+                                piece.role_ = 'P'; 
+                                piece.color_ = (color) ? 'plt' : 'pdt' ;
+                                piece.piece.src = getImgSrc(piece.color_);
+                              }
+            unsetSource();
+            undone = true; 
+       } else
+       if (move.type == EATPIECE) {
+            piece = move.piece;
+            bpiece = Benched.pop();
+            bpiece.active_ = 1;
+            bpiece.piece.style.visibility = ""
+            bpiece.piece.display = "block"
+            Board[move.oloc] =  piece;
+            Board[bpiece.location_] =  bpiece;
+            piece.piece.className = (EXPAND_) ? "piece p_" + reverseLoc(move.oloc) : "xpiece px_" + reverseLoc(move.oloc);
+            bpiece.piece.className = (EXPAND_) ? "piece p_" + reverseLoc(bpiece.location) : "xpiece px_" + reverseLoc(bpiece.location);
+            piece.oldlocation_ = move.ooloc;
+            piece.location_ = move.oloc;
+            if (move.promote) { const color = piece.color_.match(/lt$/);
+                                piece.role_ = 'P'; 
+                                piece.color_ = (color) ? 'plt' : 'pdt' ;
+                                piece.piece.src = getImgSrc(piece.color_);
+                              }
+            unsetSource();
+            undone = true; 
+       } else
+       if (move.type == ENPASSANT) {
+            piece = move.piece;
+            bpiece = Benched.pop();
+            bpiece.active_ = 1;
+            bpiece.piece.style.visibility = ""
+            bpiece.piece.display = "block"
+            Board[move.oloc] =  piece;
+            Board[move.nloc] = null;
+            Board[bpiece.location_] =  bpiece;
+            piece.piece.className = (EXPAND_) ? "piece p_" + reverseLoc(move.oloc) : "xpiece px_" + reverseLoc(move.oloc);
+            bpiece.piece.className = (EXPAND_) ? "piece p_" + reverseLoc(bpiece.location) : "xpiece px_" + reverseLoc(bpiece.location);
+            piece.oldlocation_ = move.ooloc;
+            piece.location_ = move.oloc;
+            unsetSource();
+            undone = true; 
+       } else
+       if (move.type == CASTLESHORT) {
+            piece = move.piece;
+            // king
+            Board[move.oloc] =  piece;
+            Board[move.nloc] =  null;
+            piece.piece.className = (EXPAND_) ? "piece p_" + reverseLoc(move.oloc) : "xpiece px_" + reverseLoc(move.oloc);
+            piece.oldlocation_ = move.ooloc;
+            piece.location_ = move.oloc;
+            // rook
+            var oloc_ = null, nloc_ = null;
+            if (piece.color_.match(/lt$/)) {
+                var oloc_ = "h1", nloc_ = "f1";
+            } else {
+                var oloc_ = "h8", nloc_ = "f8";
+            }
+            piece = Board[nloc_];
+            Board[oloc_] =  piece;
+            Board[nloc_] = null;
+            Board[oloc_].piece.className = (EXPAND_) ? "piece p_" +  reverseLoc(oloc_) : "xpiece px_" + reverseLoc(oloc_);
+            Board[oloc_].location_ = oloc_;
+            Board[oloc_].oldlocation_ = null;
+            unsetSource();
+            undone = true; 
+       } else
+       if (move.type == CASTLELONG) {
+           piece = move.piece;
+            // king
+            Board[move.oloc] =  piece;
+            Board[move.nloc] =  null;
+            piece.piece.className = (EXPAND_) ? "piece p_" + reverseLoc(move.oloc) : "xpiece px_" + reverseLoc(move.oloc);
+            piece.oldlocation_ = move.ooloc;
+            piece.location_ = move.oloc;
+            // rook
+            var oloc_ = null, nloc_ = null;
+            if (piece.color_.match(/lt$/)) {
+                var oloc_ = "a1", nloc_ = "d1";
+            } else {
+                var oloc_ = "a8", nloc_ = "d8";
+            }
+            piece = Board[nloc_];
+            Board[oloc_] =  piece;
+            Board[nloc_] = null;
+            Board[oloc_].piece.className = (EXPAND_) ? "piece p_" +  reverseLoc(oloc_) : "xpiece px_" + reverseLoc(oloc_);
+            Board[oloc_].location_ = oloc_;
+            Board[oloc_].oldlocation_ = null;
+            unsetSource();
+            undone = true; 
+       }
+       if (undone) {
+            if (switchside) SIDETOMOVE_ = (SIDETOMOVE_ == WHITE) ? BLACK: WHITE; 
+            ecoGame_.pop(); 
+            Undo.pop();
+       }
+    }
+
+
+    function initializeBoard() {
+      // Initialize Board
+      for (let v=1; v <= 8; v++) {
+        for (let h=0; h < 8; h++) {
+           const board = Board[horiz[h] + v];
+           if (board != null) {
+              const elem = board.piece;
+              try {
+               elem.parentNode.removeChild(elem);
+              } catch(e) {}
+           }
+           Board[horiz[h] + v] = null;
+        }
+      }
+
+      for (var p in Benched) {
+          const board = Benched[p];
+          if (board != null) {
+             const elem = board.piece;
+             try {
+               elem.parentNode.removeChild(elem);
+             } catch(e) {}
+          }
+      }
+    }
+
+    function repositionBoard(fen) {  // using  UCI-fen
+       if (fen != null) {
+          var ranks = fen.split(' ')[0].split('/');
+          initializeBoard();
+
+          for (r in ranks) {
+             const pieces = ranks[r]
+             const rank = 8 - parseInt(r);
+             var v = 0;
+             for (p in pieces) {
+               var role = null, color = null, location = null;
+               const piece = pieces[p];
+               if (piece.match(/[RNBQKP]/)) { // lt
+                  role = piece.toUpperCase();
+                  color = piece.toLowerCase() + 'lt';
+                  location = horiz[v] + rank;
+                  v++;
+               } else
+               if (piece.match(/[rnbqkp]/)) { // dt
+                  role = piece.toUpperCase();
+                  color = piece.toLowerCase() + 'dt';
+                  location = horiz[v] + rank;
+                  v++;
+               } else {
+                 const spaces = parseInt(piece);
+                 v +=  (spaces );
+               }
+               if (role != null) { 
+                const Piece_ = new Piece(role, color, location);
+                chessboard.appendChild(Piece_.getpiece);
+                Board[location] = Piece_;
+               }
+             }
+          } 
+       }
+    }
+
+    function reloadBoard() { // using UCI-fen
+      initializeBoard();
+      //  var iINITFEN_ = 'rnbqkbn1/1pQpppp1/7r/p6p/P6P/Q6Q/1PQPPPP1/1NBQKBN1 b q - 0 1'
+       // var iINITFEN_ = 'rnbqkbn1/1pRpppp1/7r/p6p/P6P/R6R/1PRPPPP1/1NBQKBN1 b q - 0 1'
+      // var iINITFEN_ = 'rnbqkbn1/1pQpppp1/7r/p6p/P6P/R6Q/1PRPPPP1/1NBRKBN1 b q - 0 1'
+      // var iINITFEN_ = 'rnbqkbn1/1pQpppp1/7r/p6p/P6P/R6R/1PQPPPP1/1NBQKBN1 b q - 0 1'
+      //  var iINITFEN_ = 'rnbqkbn1/1ppppQp1/2Q4r/p6p/P6P/1Q3Q2/1PPPPPP1/1NBQKBN1 b q - 0 1'
+       //  var iINITFEN_ = 'rnbqkbn1/1ppppNp1/2N4r/p6p/P5NP/5N2/1PPPPPP1/1NBQKBN1 b q - 0 1'
+      // var iINITFEN_ =  "rnbqkb1r/ppp1pppp/3p1n2/8/4P3/5N2/PPPPBPPP/RNBQK2R b KQKq - 0 1";
+      // var iINITFEN_ = "8/5P2/8/K7/7k/8/8 w - - 0 1";
+      // var iINITFEN_ = "1nb5/8/8/8/3K4/k7/8/8 w - - 0 1";
+      //  var iINITFEN_ = "k7/2K5/8/8/8/8/8/8 w - - 0 1";
+      // var iINITFEN_ = "1nb5/8/8/2k6/8/4K3/8/8 w - - 0 1";
+      ANALYZEGAME_ = true;
+      repositionBoard(wINITFEN_);
+    }
+
+
+    function find_bishop(bpiece, color, location, hint, src, diff_nh, diff_nv, oh, nh, ov, nv) {
+       const loc = bpiece.location;
+       var blocked = 0, _loc = null, _oh = String.fromCharCode(oh);
+       for (var i = 1; i <= diff_nh; i++) {
+          const h = (oh < nh) ? String.fromCharCode(oh + i) : String.fromCharCode(oh - i);
+          const v = (ov < nv) ? (ov + i) : (ov - i);
+          const apiece = Board[h + v];
+          if ( i == diff_nh ) {  // same destination
+              if (apiece != null && apiece.color_.slice(-2) == color) {
+                    blocked = 1; _loc = null;
+              } else { // eat or move
+                    if (h + v == location)  { // found the target
+                        if (src != null) { // now select piece, assuming multiple sources
+                          if (loc == src || _oh == src || ov == src) { _loc = loc }
+                        } else { _loc = loc } // otherwise, choose the only one source
+                    }
+             }
+          } else { if (apiece != null)   { blocked = 1; _loc = null; } }
+       }
+       if (!blocked) {return _loc; }
+       return null;
+    }
+
+    function find_rook(bpiece, color, location, hint, src, diff_nh, diff_nv, oh, nh, ov, nv) {
+       const loc = bpiece.location;
+       var blocked = 0, _loc = null, _oh = String.fromCharCode(oh);
+       if (diff_nv == 0 && diff_nh > 0) {
+            for (var i = 1; i <= diff_nh; i++) {
+                const h = (oh < nh) ? String.fromCharCode(oh + i) : String.fromCharCode(oh - i);
+                const apiece = Board[h + nv];
+                  if ( i == diff_nh ) {  // same destination
+                      if (apiece != null && apiece.color_.slice(-2) == color) {
+                          blocked = 1; _loc = loc;
+                      } else { // eat or move
+                        if (h + nv == location)  { 
+                           if (src != null) { // now select piece, assuming multiple sources
+                              if (loc == src || _oh == src || ov == src) { _loc = loc }
+                           } else { _loc = loc } // otherwise, choose the only one source
+                        }
+                      }
+                  } else {
+                      if (apiece != null) { blocked = 1; _loc = null; } 
+                  }
+            }
+            if (!blocked) {return _loc; }
+       } else
+       if (diff_nh == 0 && diff_nv > 0) {
+            const h = String.fromCharCode(nh);
+            for (var i = 1; i <= diff_nv; i++) {
+                const v = (ov < nv) ? (ov + i) : (ov - i);
+                const apiece = Board[_oh + v];
+                if ( i == diff_nv ) {  // same destination
+                      if (apiece != null && apiece.color_.slice(-2) == color) {
+                          blocked = 1; _loc = null;
+                      } else { // eat or move
+                        if (h + v == location)  { 
+                           if (src != null) { // now select piece, assuming multiple sources
+                              if (loc == src || _oh == src || ov == src) { _loc = loc }
+                           } else { _loc = loc } // otherwise, choose the only one source
+                        }
+                      }
+                } else { if (apiece != null) { blocked = 1; _loc = null; } }
+            }
+            if (!blocked) {return _loc; }
+       }
+       return null;
+    }
+
+    function find_knight(bpiece, color, location, hint, src, diff_nh, diff_nv, oh, nh, ov, nv) {
+       const loc = bpiece.location;
+       var blocked = 0, _loc = null, _oh = String.fromCharCode(oh);
+       if ((diff_nh == 1 && diff_nv == 2) || 
+           (diff_nh == 2 && diff_nv == 1)) {
+         if (bpiece.color_.slice(-2) != color) {
+            blocked = 1;
+         } else {
+            if (src != null) { // now select piece, assuming multiple sources
+              if (loc == src || _oh == src || ov == src) { _loc = loc }
+            } else { _loc = loc } // otherwise, choose the only one source
+         } 
+       }
+       if (!blocked) { return _loc; }
+       return null;
+    }
+
+    function find_location(color, role, location, hint = null, src = null) {
+      const locs = [];
+      for (var p in Board) {
+        const bpiece = Board[p];
+        if (bpiece != null) {
+            const loc = bpiece.location;
+            const oh    = loc[0].charCodeAt(0), ov = parseInt(loc[1]);
+            const nh    = location[0].charCodeAt(0), nv = parseInt(location[1]);
+            diff_nh = Math.abs(nh - oh); diff_nv = Math.abs(nv - ov);
+            if ((color == 'lt' && bpiece.color.match(/lt$/)) || (color == 'dt' && bpiece.color.match(/dt$/)))  {
+               if (bpiece.role == "K" && role == "K") {
+                  locs.push(loc);
+                } else 
+                if (bpiece.role == "N" && role == "N") {
+                  const floc = find_knight(bpiece, color, location, hint, src, diff_nh, diff_nv, oh, nh, ov, nv);
+                  if (floc != null) locs.push(floc);
+                } else
+                if (bpiece.role == "B" && role == "B") {
+                  const floc = find_bishop(bpiece, color, location, hint, src, diff_nh, diff_nv, oh, nh, ov, nv);
+                  if (floc != null) locs.push(floc);
+                } else
+                if (bpiece.role == "R" && role == "R") {
+                  const floc = find_rook(bpiece, color, location, hint, src, diff_nh, diff_nv, oh, nh, ov, nv);
+                  if (floc != null) locs.push(floc);
+                } else
+                if (bpiece.role == "Q" && role == "Q") {
+                  const floc1 = find_bishop(bpiece, color, location, hint, src, diff_nh, diff_nv, oh, nh, ov, nv);
+                  if (floc1 != null) locs.push(floc1);
+                  const floc2 = find_rook(bpiece, color, location, hint, src, diff_nh, diff_nv, oh, nh, ov, nv);
+                  if (floc2 != null) locs.push(floc2);
+                } else 
+                if (bpiece.role == "P" && role.match(/[a-h]/) != null) {
+                  if (diff_nh == 0 && (diff_nv == 1 || diff_nv == 2)) {
+                     const bpiece1 = Board[String.fromCharCode(oh) + ((color == 'lt') ? (ov + 1) : (ov - 1))];
+                     if (bpiece1 != null) { continue }; // there is a block.
+                     if (hint == null) { // moving
+                       if (color == 'dt' && ov > nv) { locs.push(loc); }
+                       if (color == 'lt' && ov < nv) { locs.push(loc); }
+                    }
+                  } else
+                  if (diff_nh == 1 && diff_nv == 1) {
+                     if (hint != null && hint == "x") { // eating
+                        const loc1 = loc[0];
+                        if (loc[0] == role) {
+                           if (color == 'dt' && ov > nv) { locs.push(loc); }
+                           if (color == 'lt' && ov < nv) { locs.push(loc); }
+                        }
+                     }
+                  } 
+                }
+            }
+        }
+      }
+      return locs;
+    }
+
+    // Audio
+    function playawalker() {
+       // const audio = new Audio("/audio/AlanWalker.mp3");
+       const audio = new Audio("/audio/shortawalker.mp3");
+       audio.volume = 0.5;
+       return audio;
+    }
+
+    function chessreset() {
+       const audio = new Audio("/audio/chessreset.mp3");
+       audio.volume = 1.0;
+       return audio;
+    }
+    function chesscastle() {
+       const audio = new Audio("/audio/chesscastle.mp3");
+       audio.volume = 1.0;
+       return audio;
+    }
+    function chessmove() {
+       const audio = new Audio("/audio/chessmove.mp3");
+       audio.volume = 1.0;
+       return audio;
+    }
+    function chesscapture() {
+       const audio = new Audio("/audio/chesscapture.mp3");
+       audio.volume = 1.0;
+       return audio;
+    }
+
+    var PLAY_AW_ = false;
+    function playAW() {
+        PLAY_AW_ = (PLAY_AW_) ? false: true;
+        const music_ = document.getElementById("musicid");
+        if (PLAY_AW_) { 
+            music_.innerHTML = "&#9834;";
+            chess_awalker.playbackRate = 1.0;
+         } else  { 
+            music_.innerHTML = "&#9632;";
+            chess_awalker.pause(); chess_awalker.currentTime = 0 
+         };
+    } 
+
+    // audio objects
+    const chess_awalker = playawalker();
+    const chess_move = chessmove();
+    const chess_capture = chesscapture();
+    const chess_castle = chesscastle();
+    const chess_reset = chessreset();
+
+    var parser = null;
+    async function loadParser() {
+        const res = await fetch('/jscripts/pgngrammar.pegjs');
+        const grammer = await res.text();
+        parser = PEG.buildParser(grammer);
+    }
+
+
+    const pause = time => new Promise(resolve => setTimeout(resolve, time))
+    const musictime_ = document.getElementById("musictimeid");
+    var MUSIC_TIME = musictime_.value;
+
+    function movePiece(cl, move, spanmove, sound = true) {
+        var src_loc = null, dest_loc = null, role = null, src = null, hint = null;
+        var piece = (cl == 'lt') ? move.white : move.black;  
+        var len = piece.length;
+
+        role = piece[0]; 
+        dest_loc = piece.slice(-2);
+        if (piece == "O-O") {
+             src_loc = [ (cl == 'lt') ? "e1" : "e8" ]; dest_loc = (cl == 'lt') ? "g1" : "g8";
+        } else
+        if ( piece == "O-O-O") {
+             src_loc = [ (cl == 'lt') ? "e1" : "e8" ]; dest_loc = (cl == 'lt') ? "c1" : "c8";
+        } else if (len == 2) {
+             dest_loc = piece;
+             src_loc = find_location(cl, piece[0], dest_loc);
+        } else if (len == 3) {
+             src_loc = find_location(cl, role, dest_loc);
+        } else
+        if (len == 4) { // e.g. Rxe1 exd1 Rhe1
+             hint = piece[1];
+             if (hint != 'x') { hint = null; src = piece[1]; }
+             src_loc = find_location(cl, role, dest_loc, hint, src);
+        } else
+        if (len == 5) { // e.g. Rhxe1 R8xe1  Nh8g6
+             hint = piece[2];
+             if (hint == 'x') {
+                   src = piece[1];
+             } else {
+                   hint = null;
+                   src = piece.slice(1,3).match(/[a-h][1-8]/)[0]
+             }
+             src_loc = find_location(cl, role, dest_loc, hint, src);
+        } else
+        if (len == 6) { // e.g. Rh8xe1
+             src = piece.slice(1,3); hint = piece[3];
+             src_loc = find_location(cl, role, dest_loc, hint, src);
+        }
+        if (src_loc.length < 1) illegal_move('Illegal move (99)!');
+        log("Final " + cl + " location: " + src_loc + " " + dest_loc);
+        if (spanmove != null) { spanmove.className = "chesspiecenomove"; }
+        const mid = (cl == 'lt') ? "moveidl" : "moveidd"
+        spanmove = document.getElementById( mid + move.step);
+        if (spanmove != null) spanmove.className = "chesspiecemove";
+        piece = place(src_loc, dest_loc, (cl == 'lt') ? move.wpromote : move.bpromote, sound);
+        return { piece: piece, spanmove: spanmove };
+    }
+
+    
+    var F_WELO_OPS_ = null, F_BELO_OPS_ = null, F_MOVES_OPS_ = null, 
+        F_WELO_ = null, F_BELO_ = null, F_MOVES_ = null, F_RES1_ = null, F_RES2_ = null, F_RES3_ = null;
+    function filterPlay() {
+        f_welo_ops = document.getElementById("filter_welo_ops");
+        f_belo_ops = document.getElementById("filter_belo_ops");
+        f_moves_ops = document.getElementById("filter_moves_ops");
+        f_welo = document.getElementById("filter_welo");
+        f_belo = document.getElementById("filter_belo");
+        f_moves = document.getElementById("filter_moves");
+
+        f_res1 = document.getElementById("filter_res1");
+        f_res2 = document.getElementById("filter_res2");
+        f_res3 = document.getElementById("filter_res3");
+
+        F_WELO_OPS_ = f_welo_ops.options[f_welo_ops.selectedIndex].value;
+        F_BELO_OPS_ = f_belo_ops.options[f_belo_ops.selectedIndex].value;
+        F_MOVES_OPS_ = f_moves_ops.options[f_moves_ops.selectedIndex].value;
+
+        F_WELO_ = f_welo.value; F_BELO_ = f_belo.value; F_MOVES_ = f_moves.value;
+        F_RES1_ = (f_res1.checked) ? f_res1.value : null;
+        F_RES2_ = (f_res2.checked) ? f_res2.value : null;
+        F_RES3_ = (f_res3.checked) ? f_res3.value : null;
+    }
+
+    var ECO_ = null;
+    async function loadECO() {
+        const res = await fetch('/jscripts/eco2.pgn');
+        var eco = await res.text();
+        eco = eco.split(/\n/);
+        const eco_ = []
+        for (var p in eco) {
+            const variation = eco[p].replace(/"/g,"").replace(/[ ]+/g, " ").split("~");
+            variation[variation.length-1] = variation[variation.length-1].replace(/([0-9]+\.) /g, "$1");
+            eco_.push(variation);
+        }
+        ECO_ = eco_;
+    }
+
+    function findECO(eco, moves) {
+        var eco_ = null;
+        for (p in ECO_) {
+          var peco = ECO_[p];
+          if (peco[0] == eco) {
+             eco_ = { eco: peco[0], variation: peco[2], opening:  peco[1] }
+             break;
+          }
+        }
+        return eco_; 
+    }
+
+    
+    var LASTMOVE_ = null;
+    function moveIt(count_, move, chk = '') {
+        const wmove = move.replace(/N/g, '&#9816;').replace(/Q/g,'&#9813;').
+                  replace(/B/g,'&#9815;').replace(/K/g,'&#9812;').
+                  replace(/R/g,'&#9814;').replace(/P/g, '');
+        const comment = "";
+        const movespan0 = document.createElement("span");
+        const movespan1 = document.createElement("span");
+        const movespan2 = document.createElement("span");
+        const movespace1 = document.createTextNode(" ");
+        const movechk1 = document.createElement("span"); movechk1.innerHTML = chk; movechk1.className = 'chesscmt';
+        const movecmt1 = document.createElement("span"); movecmt1.innerHTML = ""; movecmt1.className = 'chesscmt';
+        movechk1.id = "chk_" + count_ + "_" + move;
+        LASTMOVE_ = movechk1.id;
+        if (SIDETOMOVE_ == WHITE) { movespan0.innerHTML = count_ + "."; } 
+        movespan1.innerHTML = wmove; movespan1.id = "moveid" + count_ + ((SIDETOMOVE_ == WHITE) ? "w" : "b");
+        movespan0.className = "chesspiecestep";
+        movespan1.className = "chesspiecenomove";
+
+        chessgame.appendChild(movespan0);
+        chessgame.appendChild(movespan1);
+        chessgame.appendChild(movechk1);
+        chessgame.appendChild(movecmt1);
+        chessgame.appendChild(movespace1);
+        ecoGame_.push( movespan0.innerHTML + move.replace(/P/g, '') + chk);
+    } 
+
+
+    var PLAYBUTTON = null, PLAYING = false, INTERRUPT = false, MOVETRACKER_ = null;
+    var CHESSMOVES_ = [], CURRENTGAME_ = null, CURRENTCOLOR_ = null;
+    async function initializePlay(n) {
+
+        const game = Games[n];
+        if (typeof(game) == "undefined") return;
+        const pmoves = parser.parse(game.moves)[0];
+
+        // reload Board
+        reloadBoard();
+
+        // populate header
+         eventid.innerHTML = game.ev + " (" + game.si + ")";
+         dateid.innerHTML = game.dt;
+         wplayer.innerHTML = game.wp; 
+         bplayer.innerHTML = game.bp;
+         welo.innerHTML = "(" + game.we + ")";
+         belo.innerHTML = "(" + game.be + ")";
+         resid.innerHTML = game.rt;
+
+         // get eco
+         const eco_ = findECO(game.eco, game.moves);
+         ecoid.innerHTML       = eco_.eco;
+         openingid.innerHTML   = eco_.opening;
+         variationid.innerHTML = eco_.variation.replace(/N/g, '&#9816;').replace(/Q/g,'&#9813;').
+                  replace(/B/g,'&#9815;').replace(/K/g,'&#9812;').
+                  replace(/R/g,'&#9814;').replace(/P/g, '');
+
+        // populate moves
+        chessgame.innerHTML = "";
+        var moves = CHESSMOVES_ = [];
+        for (g in pmoves) {
+           const move = pmoves[g][0];
+           const wmove = move[2][0].replace(/N/g, '&#9816;').replace(/Q/g,'&#9813;').
+                       replace(/B/g,'&#9815;').replace(/K/g,'&#9812;').
+                       replace(/R/g,'&#9814;');
+           const bmove = move[4][0].replace(/N/g, '&#9816;').replace(/Q/g,'&#9813;').
+                       replace(/B/g,'&#9815;').replace(/K/g,'&#9812;').
+                       replace(/R/g,'&#9814;');
+
+           const comment = pmoves[g][1];
+           const movespace1 = document.createTextNode(" ");
+           const movespace2 = document.createTextNode("  ");
+           const movespan0 = document.createElement("span");
+           const movespan1 = document.createElement("span");
+           const movespan2 = document.createElement("span");
+           const movechk1 = document.createElement("span"); movechk1.innerHTML = move[2][2]; movechk1.className = 'chesscmt';
+           const movechk2 = document.createElement("span"); movechk2.innerHTML = move[4][2]; movechk2.className = 'chesscmt';
+           const movecmt1 = document.createElement("span"); movecmt1.innerHTML = move[2][3]; movecmt1.className = 'chesscmt';
+           const movecmt2 = document.createElement("span"); movecmt2.innerHTML = move[4][3]; movecmt2.className = 'chesscmt';
+
+           movespan0.innerHTML = move[0] + ".";
+           movespan1.innerHTML = wmove; movespan1.id = "moveidl" + move[0];
+           movespan2.innerHTML = bmove; movespan2.id = "moveidd" + move[0];
+           movespan0.className = "chesspiecestep";
+           movespan1.className = "chesspiecenomove";
+           movespan2.className = "chesspiecenomove";
+           movespan1.onclick = jumpPlay; movespan1.internal_ = { tracker_: g, color: 'lt' }
+           movespan2.onclick = jumpPlay; movespan2.internal_ = { tracker_: g, color: 'dt' }
+           chessgame.appendChild(movespan0);
+           chessgame.appendChild(movespan1);
+           chessgame.appendChild(movechk1);
+           chessgame.appendChild(movecmt1);
+           chessgame.appendChild(movespace1);
+           chessgame.appendChild(movespan2);
+           chessgame.appendChild(movechk2);
+           chessgame.appendChild(movecmt2);
+           chessgame.appendChild(movespace2);
+           CHESSMOVES_.push({ step: move[0], white: move[2][0], black: move[4][0], 
+                    wpromote: move[2][1], bpromote: move[4][1], wcheck: move[2][2], bcheck: move[4][2] });
+        }
+        const movespace3 = document.createTextNode("   ");
+        const movespan3 = document.createElement("span");
+        movespan3.className = "chesspiecers";
+        movespan3.style.color = "#1255b3";
+        movespan3.innerHTML = " " + game.rt;
+        chessgame.appendChild(movespace3);
+        chessgame.appendChild(movespan3);
+        return moves;
+     }
+
+    function place(where, location, promote = null, sound = true) {
+        if (where.length > 1) { // multiple
+          for (p in where) {
+            const where_ = where[p];
+            if (Board[where_] != null) {
+                Board[where_].move = { location: location, promote: promote } ;
+                if (sound) chess_move.play();
+                return Board[location];
+            }
+          }
+        } else {
+            Board[where].move = { location: location, promote: promote } ;
+            if (sound) chess_move.play();
+            return Board[location];
+        }
+    }
+
+    function showGame(obj) {
+       var g = obj.innerHTML;
+       g = g.replace(". ", ""); 
+       const game_ = document.getElementById("gametrid" + g);
+       game_.scrollIntoView();
+    }
+
+     // start playing
+     async function play(bt) {
+        if (PLAYING || REPEATPLAY_) { return };
+        if (MOVETRACKER_ != null && moves.length == parseInt(MOVETRACKER_) + 1) { MOVETRACKER_ = '-1' };
+        var current_ = document.getElementById("currentgameid");
+        var movep_ = null;
+
+        var INT_TRACKER = MOVETRACKER_, spanmove = null;
+        PLAYING = true;
+        CURRENTGAME_ = bt.value;
+        current_.innerHTML = (parseInt(CURRENTGAME_) + 1) + ". ";
+        emptySource();
+        moves = await initializePlay(CURRENTGAME_);
+        if (INT_TRACKER == null || INT_TRACKER == '-1') await pause(MUSIC_TIME);
+        chess_move.volume = 1.0;
+        bt.parentNode.parentNode.className = "chesstr chesstrcurrent";
+        for (g in moves) {
+
+           if (INTERRUPT || LOADPGN_) { break; }
+           if (INT_TRACKER != null && INT_TRACKER != '-1') {
+              movep_ =  await movePiece('lt', moves[g], spanmove); spanmove = movep_.spanmove; setSource(movep_.piece);
+              movep_ =  await movePiece('dt', moves[g], spanmove); spanmove = movep_.spanmove; setSource(movep_.piece);
+              if (INT_TRACKER == g) {
+                  INT_TRACKER = null;
+                  if (CURRENTCOLOR_ == 'lt') await pause(MUSIC_TIME); 
+              }
+              continue;
+           }
+           MOVETRACKER_ = g;
+           movep_ =  await movePiece('lt', moves[g], spanmove); spanmove = movep_.spanmove; setSource(movep_.piece);
+           await pause(MUSIC_TIME); CURRENTCOLOR_ = 'lt';
+           movep_ =  await movePiece('dt', moves[g], spanmove); spanmove = movep_.spanmove; setSource(movep_.piece);
+           if (g > 127 || g == 1) spanmove.scrollIntoView();
+           await pause(MUSIC_TIME); CURRENTCOLOR_ = 'dt';
+        }
+
+        // chess_awalker.pause();
+ 
+        // release playing status
+        PLAYING = false; INTERRUPT = false;  LOADPGN_ = false;
+        bt.innerHTML = "&#8594;"
+        bt.onclick = proceedPlay;
+    }
+
+    // interrupt play
+    var int_interval = 0, playtime = null;
+    function readyPlay(bt) {
+        int_interval += 1;
+        if (int_interval > 20) { int_interval = 0; clearInterval(playtime)  }
+        if (!INTERRUPT) {
+           int_interval = 0;
+           clearInterval(playtime);
+           if (PLAYBUTTON != null && PLAYBUTTON.value != bt.value) {
+              PLAYBUTTON.innerHTML = "&#8594;";
+              PLAYBUTTON.onclick = proceedPlay;
+              MOVETRACKER_ = null; CURRENTCOLOR_ = null;
+              PLAYBUTTON.parentNode.parentNode.className = "chesstr";
+           }
+           bt.innerHTML = "&#9675;";
+           bt.onclick = interruptPlay;
+           PLAYBUTTON = bt;
+           play(bt);
+        }
+    }
+
+    function proceedPlay() {  
+        const bt = this;
+        if (REPEATPLAY_) return;
+        if (PLAYING && !INTERRUPT) {
+            INTERRUPT = true;
+            playtime = setInterval(readyPlay, 50, this);
+        } else if (!PLAYING && !INTERRUPT) {
+            if (PLAYBUTTON != null && PLAYBUTTON.value != bt.value) {
+               MOVETRACKER_ = null; CURRENTCOLOR_ = null;
+               PLAYBUTTON.parentNode.parentNode.className = "chesstr";
+           }
+           if (REPEATBUTTON_ != null) REPEATBUTTON_.parentNode.parentNode.className = "chesstr";
+           bt.innerHTML = "&#9675;";
+           bt.onclick = interruptPlay;
+           PLAYBUTTON = bt;
+           play(bt);
+        }
+    }
+
+    function interruptPlay() {
+        if (REPEATPLAY_) return;
+        const bt = this;
+        bt.innerHTML = "&#8594;";
+        bt.onclick = proceedPlay;
+        INTERRUPT = true; // this will trigger the async play function to quit
+    }
+
+    function keyPress() { document.onkeydown = keyPlay; }
+
+    async function keyPlay(e) {
+        e = e || window.event;
+       if (PLAYING || REPEATPLAY_) return;
+       if (e.keyCode == '38') { // up
+       }
+       else if (e.keyCode == '40') { // down
+       }
+       else if (e.keyCode == '37') { // left
+         backwardPlay();
+       }
+       else if (e.keyCode == '39') {  // right
+         forwardPlay();
+       }
+    }
+
+    // calculate time
+    function calcTime(timer, start) {
+        const sec = ( Date.now() - start ) / 1000;
+        const hr = Math.floor(sec / 3600);
+        const min = (sec % 3600) / 60;
+        timer.innerHTML = hr + ":" + min.toFixed(1);
+    }
+
+    // repeat Play
+    var REPEATPLAY_ = false, REPEATWHERE_ = null, REPEATBUTTON_ = null;
+    async function repeatPlay() {
+       if (PLAYING) return;
+       var current_ = document.getElementById("currentgameid");
+       var limit = document.getElementById("limitmoveid");
+       var repeatbt = document.getElementById("repeatid");
+       if (Games.length > 0) {
+         const len_ = Games.length;
+         REPEATPLAY_ = true;
+         repeatbt.innerHTML = "&#10074;&#10074;";
+         repeatbt.onclick = interruptRepeat;
+         if (PLAYBUTTON != null) { REPEATWHERE_ = PLAYBUTTON.value; }
+         if (PLAY_AW_) { chess_awalker.volume = 1.0; chess_move.volume = 0.0 } else { chess_move.volume = 1.0 }
+         var start = Date.now(), movep_ = null;
+         const timer = document.getElementById('timerid');
+
+          
+         for (var i=0; i < len_; i++) {
+           const bt = document.getElementById("gameid" + i);
+           if (bt != null) { 
+             if (LOADPGN_) {
+                  bt.innerHTML = "&#8594;";
+                  bt.onclick = proceedPlay;
+                  repeatbt.innerHTML = "&#9654;";
+                  repeatbt.onclick = repeatPlay;
+                  REPEATWHERE_ = null; LOADPGN_ = false;
+                  return;
+             } else
+             if (REPEATPLAY_ ==  false) { 
+                  bt.innerHTML = "&#8594;";
+                  bt.onclick = proceedPlay;
+                  repeatbt.innerHTML = "&#9654;";
+                  repeatbt.onclick = repeatPlay;
+                  REPEATWHERE_=i; 
+                  return; 
+             }
+             if (REPEATWHERE_ != null) { if (i!=REPEATWHERE_) { continue; } else { REPEATWHERE_ = null }}
+             if (REPEATBUTTON_!= null) {  
+                REPEATBUTTON_.parentNode.parentNode.className = "chesstr"; 
+                REPEATBUTTON_.scrollIntoView();
+             }
+             current_.innerHTML  = (parseInt(i) + 1) + ". ";
+             bt.innerHTML = "&#9675;"; 
+             bt.onclick = interruptPlay;
+             bt.parentNode.parentNode.className = "chesstr chesstrcurrent"; 
+             REPEATBUTTON_ = bt;
+
+             emptySource();
+
+             calcTime(timer, start);
+             const moves = await initializePlay(i);
+             await pause(MUSIC_TIME * 1);
+         
+             var spanmove = null, cnt_mv = 0;
+             for (g in moves) {
+                 if (LOADPGN_) {
+                   REPEATWHERE_ = null; LOADPGN_ = false;
+                   bt.innerHTML = "&#8594;";
+                   bt.onclick = proceedPlay;
+                   repeatbt.innerHTML = "&#9654;";
+                   repeatbt.onclick = repeatPlay;
+                   return;
+                 } else
+                 if (REPEATPLAY_ ==  false) { 
+                      bt.innerHTML = "&#8594;";
+                      bt.onclick = proceedPlay;
+                      repeatbt.innerHTML = "&#9654;";
+                      repeatbt.onclick = repeatPlay;
+                      REPEATWHERE_=i; 
+                      return; 
+                 }
+                 if (PLAY_AW_) {  chess_awalker.play(); chess_move.volume = 0.0; } else { chess_move.volume = 1.0 }
+                 movep_ =  await movePiece('lt', moves[g], spanmove); spanmove = movep_.spanmove; setSource(movep_.piece);
+                 await pause(MUSIC_TIME); CURRENTCOLOR_ = 'lt';
+                 movep_ =  await movePiece('dt', moves[g], spanmove); spanmove = movep_.spanmove; setSource(movep_.piece);
+                 await pause(MUSIC_TIME); CURRENTCOLOR_ = 'dt';
+                 if (g > 127 || g == 1) spanmove.scrollIntoView();
+                 cnt_mv += 1;
+                 if (cnt_mv >= limit.value) break; 
+             }
+             bt.innerHTML = "&#8594;";
+             bt.onclick = proceedPlay;
+             await pause(MUSIC_TIME * 1.124);
+           }
+         }
+         repeatbt.innerHTML = "&#9654;";
+         repeatbt.onclick = repeatPlay;
+         REPEATWHERE = null;
+       }
+    }
+
+    function interruptRepeat() {
+         REPEATPLAY_ = false;    
+         chess_awalker.pause();
+    }
+
+    async function jumpMove(sound=true) {
+
+        moves = await initializePlay(CURRENTGAME_);
+
+        var spanmove = null, stoptracker_ = MOVETRACKER_;
+        for (g in moves) {
+           spanmove =  await movePiece('lt', moves[g], spanmove, sound).spanmove; 
+           if (g == stoptracker_) {
+               if (CURRENTCOLOR_ == 'dt') spanmove =  await movePiece('dt', moves[g], spanmove, sound).spanmove;
+               break;
+           }
+           spanmove =  await movePiece('dt', moves[g], spanmove, sound).spanmove;
+        }
+        return { moves: moves, spanmove: spanmove } 
+    }
+
+
+    var jmp_interval = 0, jumptime = null;
+    async function readyJump(obj) {
+        jmp_interval += 1;
+        if (jmp_interval > 20) { jmp_interval = 0; clearInterval(jumptime)  }
+        if (!PLAYING) {
+          jmp_interval = 0;
+          clearInterval(jumptime);
+          MOVETRACKER_ = obj.internal_.tracker_;
+          CURRENTCOLOR_ = obj.internal_.color;
+          return await jumpMove();
+        }
+    } 
+
+    async function jumpPlay() {
+        if (REPEATPLAY_) return;
+        if (PLAYING) {
+          INTERRUPT = true;
+          jumptime = setInterval(readyJump, 50, this);
+        } else {
+          const obj = this;
+          MOVETRACKER_ = obj.internal_.tracker_;
+          CURRENTCOLOR_ = obj.internal_.color;
+          return await jumpMove();
+        }
+    }
+
+    // forward Play
+    async function forwardPlay() {
+        if (REPEATPLAY_) return;
+        if (PLAYING) return;
+        var len_ = CHESSMOVES_.length, tracker_ = parseInt(MOVETRACKER_);
+        if (CURRENTCOLOR_ == 'dt') { tracker_ += 1; }
+        if (tracker_ < 0) tracker_ = -1;
+        if (tracker_ < len_) {
+            var new_tracker_ = String(tracker_);
+            CURRENTCOLOR_ = (CURRENTCOLOR_ == 'dt') ? 'lt' : 'dt';
+            MOVETRACKER_ = new_tracker_;
+            await jumpMove();
+         }
+    }
+
+    async function backwardPlay() {
+        if (REPEATPLAY_) return;
+        if (PLAYING) return;
+        var tracker_ = parseInt(MOVETRACKER_);
+        if (tracker_ < 0) return;
+        var len_ = CHESSMOVES_.length, tracker_ = parseInt(MOVETRACKER_);
+        if (CURRENTCOLOR_ == 'lt') { tracker_ -= 1; }
+        if (tracker_ >= 0 ) {
+            var new_tracker_ = String(tracker_);
+            CURRENTCOLOR_ = (CURRENTCOLOR_ == 'dt') ? 'lt' : 'dt';
+            MOVETRACKER_ = new_tracker_;
+            await jumpMove();
+        } else {
+            resetGame(sound=false);
+        }
+    }
+
+
+    async function resetGame(sound=true) {
+        if (REPEATPLAY_) return;
+        if (PLAYING) return;
+        if (MOVETRACKER_ == '-1' || MOVETRACKER_ == null) return;
+        MOVETRACKER_ = '-1'; CURRENTCOLOR_ = 'dt';
+        moves = await initializePlay(CURRENTGAME_);
+        if (sound) { chess_reset.play();} else { chess_move.play(); }
+    }
+
+    async function endGame() {
+        if (REPEATPLAY_) return;
+        if (PLAYING) return;
+        var len_ = CHESSMOVES_.length;
+        MOVETRACKER_ = String(len_ - 1);
+        CURRENTCOLOR_ = 'dt';
+        await jumpMove();
+    }
+
+    function evalFilter(game) {
+       var filter_ = true ;
+       var moves_ = game.moves.split(' ').length - 4; moves_ = Math.floor(moves_ / 2); 
+       if (F_WELO_OPS_ == "=") if (parseInt(game.we) != parseInt(F_WELO_)) filter_ = false;
+       if (F_WELO_OPS_ == ">=") if (parseInt(game.we) < parseInt(F_WELO_)) filter_ = false;
+       if (F_WELO_OPS_ == "<=") if (parseInt(game.we) > parseInt(F_WELO_)) filter_ = false;
+
+       if (F_BELO_OPS_ == "=") if (parseInt(game.we) != parseInt(F_BELO_)) filter_ = false ;
+       if (F_BELO_OPS_ == ">=") if(parseInt(game.we) < parseInt(F_BELO_))  filter_ = false;
+       if (F_BELO_OPS_ == "<=") if(parseInt(game.we) > parseInt(F_BELO_))  filter_ = false;
+
+       if (F_MOVES_OPS_ == "=") if (moves_ != parseInt(F_MOVES_))  filter_ = false;
+       if (F_MOVES_OPS_ == ">=") if (moves_ < parseInt(F_MOVES_)) filter_ = false;
+       if (F_MOVES_OPS_ == "<=") if (moves_ > parseInt(F_MOVES_))  filter_ = false;
+
+       if (F_RES1_ == null) if (game.rt == "1-0")  filter_ = false;
+       if (F_RES2_ == null) if (game.rt == "0-1")  filter_ = false;
+       if (F_RES3_ == null) if (game.rt == "1/2-1/2")  filter_ = false;
+
+       return filter_;
+    }
+
+    function sortGames(g1, g2) {
+         var res = 0, ORDER = 0;
+         for (var i=1; i<=6; i++) {
+           ORDER = ORDERS_[i-1];
+           if (ORDER != 0) {
+              if (ORDER == 1) {
+                  if (i == 1)  res =  ((g2.wp) > (g1.wp)) ? 1 : -1;
+                  if (i == 2)  res =  ((g2.we) > (g1.we)) ? 1 : -1;
+                  if (i == 3)  res =  ((g2.bp) > (g1.bp)) ? 1 : -1;
+                  if (i == 4)  res =  ((g2.be) > (g1.be)) ? 1 : -1;
+                  if (i == 5)  res =  ((g2.rt) > (g1.rt)) ? 1 : -1;
+                  if (i == 6)  res =  ((g2.ct) > (g1.ct)) ? 1 : -1;
+              } else
+              if (ORDER == 2) {
+                  if (i == 1)  res =  ((g2.wp) < (g1.wp)) ? 1 : -1;
+                  if (i == 2)  res =  ((g2.we) < (g1.we)) ? 1 : -1;
+                  if (i == 3)  res =  ((g2.bp) < (g1.bp)) ? 1 : -1;
+                  if (i == 4)  res =  ((g2.be) < (g1.be)) ? 1 : -1;
+                  if (i == 5)  res =  ((g2.rt) < (g1.rt)) ? 1 : -1;
+                  if (i == 6)  res =  ((g2.ct) < (g1.ct)) ? 1 : -1;
+              }
+          }
+         }
+         return res;
+    }
+
+    // order List // &#8593; up // &#8595; down // &#8597; neutral
+    // 0 = no order, 1 = descending, 2 = ascending
+    const ORDERS_ = [0,0,0,0,0,0];
+    const ORDERSDESC_ = ["White Side","Elo","Black Side","Elo","Result","Cnt"];
+    function orderGame() {
+       if (PLAYING || REPEATPLAY_) return;
+       var bt = this; 
+       var ORDER_ = 0, HTML = "";
+       const OGames = Games;
+       for (var i=1; i<=6; i++) {
+         if (bt.value == i) {
+             ORDER_ = ORDERS_[i-1];
+             if (ORDER_ == 0) { HTML = "&#8595;"; ORDER_ = 1; } else  // change to 1
+             if (ORDER_ == 1) { HTML = "&#8593;"; ORDER_ = 2; } else // change to 2
+             if (ORDER_ == 2) { HTML = "&#8595;"; ORDER_ = 1; } // change to 1
+             ORDERS_[i-1] = ORDER_;
+             bt.innerHTML = ORDERSDESC_[i-1] + HTML;
+         } else { 
+             ORDERS_[i-1] = 0;
+             bt.innerHTML = ORDERSDESC_[i-1] + "&#8597;";
+         }
+       }
+       const ordered = Games.sort(sortGames);
+       Games = ordered;
+       refreshGames(true, bt.value);
+    }
+
+    // Now load a PGN
+    var Games = [];
+    async function fetchPGN(pgn_){
+        const res = await fetch(pgn_);
+        const pgngame = await res.json();
+        Games = [];
+
+        class Game {
+           constructor (game) {
+           var moves_ = game.moves.split(' ').length - 4; moves_ = Math.floor(moves_ / 2); 
+           game.ct = moves_;
+           this.detail_ = game;
+ 
+         }
+           get detail()  { return this.detail_; }
+        }
+
+        for (let i=0; i < pgngame.length; i++) {
+             const game = new Game(pgngame[i])
+             Games.push(game.detail)
+        }
+        if (Games.length > 0) {   
+          // Disable Engine
+          PRACTICEGAME_ = false; FETCHEDGAME_ = true;
+          refreshGames(false, null);
+        }
+     }
+
+    function refreshGame() {
+        const chesstable = document.getElementById("chesstableid");
+        const tbody = document.createElement('tbody');
+
+        if (chesstable.firstChild != null) {
+            chesstable.replaceChild(tbody, chesstable.firstChild);
+        } else {
+            chesstable.appendChild(tbody);
+        }
+        var td = null, txtnode;
+        var game_cnt = 0;
+        for (var p in Games) {
+            const game = Games[p]
+           if (game.we != "" && game.be != "") {
+
+            game_cnt += 1;
+            const tr = document.createElement("tr");
+
+            const tdcnt = document.createElement("td"); const cnt = document.createTextNode(game_cnt);
+            const tdev = document.createElement("td"); const ev = document.createTextNode(game.ev.slice(0,35));
+            const tdwp = document.createElement("td"); const wp = document.createTextNode(game.wp.slice(0,23));
+            const tdbp = document.createElement("td"); const bp = document.createTextNode(game.bp.slice(0,23));
+            const tdwe = document.createElement("td"); const we = document.createTextNode(game.we);
+            const tdbe = document.createElement("td"); const be = document.createTextNode(game.be);
+            const tdrt = document.createElement("td"); const rt = document.createTextNode(game.rt);
+            const tdbt = document.createElement("td"); const bt = document.createElement("button");
+            const tdec = document.createElement("td");
+            const ec = document.createTextNode(typeof game.eco === "undefined" ? "" : game.eco);
+
+            const tdct = document.createElement("td"); const ct = document.createTextNode(game.ct);
+            tdev.appendChild(ev); tdcnt.appendChild(cnt);
+            tdwp.appendChild(wp); tdbp.appendChild(bp); tdwe.appendChild(we);
+            tdbe.appendChild(be); tdrt.appendChild(rt); tdbt.appendChild(bt);
+            tdct.appendChild(ct); tdec.appendChild(ec);
+            tr.id = "gametrid" + p;
+            tr.appendChild(tdbt); tr.appendChild(tdcnt); tr.appendChild(tdct);
+            tr.appendChild(tdwp); tr.appendChild(tdwe);
+            tr.appendChild(tdbp); tr.appendChild(tdbe); tr.appendChild(tdrt);
+            tr.appendChild(tdec); tr.appendChild(tdev); tr.appendChild(tdct);
+            tr.className = "chesstr";
+            tdcnt.className = "chesstdb"; tdev.className = "chesstde";  tdec.className = "chesstce";
+            tdwp.className = "chesstdp"; tdbp.className = "chesstdp"; tdwe.className = "chesstdl";
+            tdbe.className = "chesstdl"; tdrt.className = "chesstdr";  tdbt.className = "chesstdb";
+            tdct.className = "chesstdb";
+            tbody.appendChild(tr);
+
+            bt.innerHTML = "&#8594;";
+            bt.onclick = proceedPlay;
+            bt.value = p;
+            bt.id = "gameid" + p;
+
+            bt.innerHTML = "&#8594;";
+            bt.onclick = proceedPlay;
+            bt.value = p;
+            bt.id = "gameid" + p;
+            tr.className = "chesstr chesstrcurrent";
+
+            if (p == Games.length - 1) {
+              tr.className = "chesstr chesstrcurrent";
+              PLAYBUTTON = bt;
+              tr.scrollIntoView();
+            } else {
+              tr.className = "chesstr";
+            }
+           }
+        }
+        var current_ = document.getElementById("currentgameid");
+        current_.innerHTML = Games.length + '. ';
+    }
+
+     var FETCHEDGAME_ = false;
+     function refreshGames(sorted = false, bttn_ = null) {
+        // populate html
+        const chesstable = document.getElementById("chesstableid");
+        const tbody = document.createElement('tbody');
+
+        if (chesstable.firstChild != null) {
+            chesstable.replaceChild(tbody, chesstable.firstChild);
+        } else {
+            chesstable.appendChild(tbody);
+        }
+
+        var td = null, txtnode;
+        var game_cnt = 0;
+        filterPlay();
+        for (var p in Games) {
+            const game = Games[p]
+           if (game.we != "" && game.be != "") {
+            if (evalFilter(game) ==  false) continue;
+            game_cnt += 1;
+            // var moves_ = game.moves.split(' ').length - 4; moves_ = Math.floor(moves_ / 2); 
+            if (game_cnt == 1) {
+              const tr1 = document.createElement("tr");
+              const td1 = document.createElement("td"); td1.appendChild(document.createTextNode(""));
+              const td2 = document.createElement("td"); td2.appendChild(document.createTextNode(""));
+              const td3 = document.createElement("td"); td3.appendChild(document.createTextNode(""));
+              const td4 = document.createElement("td"); td4.appendChild(document.createTextNode(""));
+              const tdowp  = document.createElement("td"); const owp = document.createElement("button");
+              const tdowe  = document.createElement("td"); const owe = document.createElement("button");
+              const tdobp  = document.createElement("td"); const obp = document.createElement("button");
+              const tdobe  = document.createElement("td"); const obe = document.createElement("button");
+              const tdort  = document.createElement("td"); const ort = document.createElement("button");
+              const tdocnt = document.createElement("td"); const ocnt = document.createElement("button");
+              // #8593; up // &#8595; down
+              tdowp.appendChild(owp); tdowe.appendChild(owe); tdobp.appendChild(obp); 
+              tdobe.appendChild(obe); tdort.appendChild(ort); tdocnt.appendChild(ocnt);
+              const bts_ = [ owp, owe, obp, obe, ort, ocnt ];
+              for (var i=1; i<=6; i++ ) {
+                  const bt_ = bts_[i-1];
+                  bt_.onclick = orderGame;
+                  bt_.value = i;
+                  bt_.innerHTML = ORDERSDESC_[i-1] + "&#8597;"; 
+                  if (sorted && bttn_ == i) {
+                    if (ORDERS_[i-1] == 1) bt_.innerHTML = ORDERSDESC_[i-1] + "&#8595;"; else
+                    if (ORDERS_[i-1] == 2) bt_.innerHTML = ORDERSDESC_[i-1] + "&#8593;"; 
+                  }
+              }
+              tr1.appendChild(td1);
+              tr1.appendChild(td2);
+              tr1.appendChild(tdowp); tr1.appendChild(tdowe);
+              tr1.appendChild(tdobp); tr1.appendChild(tdobe);
+              tr1.appendChild(tdort); 
+              tr1.appendChild(td3);
+              tr1.appendChild(td4);
+              tr1.appendChild(tdocnt);
+              tdowp.className = "chesstdp"; tdobp.className = "chesstdp"; 
+              tdowe.className = "chesstdl"; tdobe.className = "chesstdl"; 
+              td1.className = "chesstdb"; td2.className = "chesstdb";
+              td3.className = "chesstce"; td4.className = "chesstde";
+              tdort.className = "chesstdb";
+              tr1.className = "chesstr"; 
+              tbody.appendChild(tr1);
+            }
+
+            const tr = document.createElement("tr");
+
+            const tdcnt = document.createElement("td"); const cnt = document.createTextNode(game_cnt);
+            const tdev = document.createElement("td"); const ev = document.createTextNode(game.ev.slice(0,35));
+            const tdwp = document.createElement("td"); const wp = document.createTextNode(game.wp.slice(0,23));
+            const tdbp = document.createElement("td"); const bp = document.createTextNode(game.bp.slice(0,23));
+            const tdwe = document.createElement("td"); const we = document.createTextNode(game.we);
+            const tdbe = document.createElement("td"); const be = document.createTextNode(game.be);
+            const tdrt = document.createElement("td"); const rt = document.createTextNode(game.rt);
+            const tdbt = document.createElement("td"); const bt = document.createElement("button"); 
+            const tdec = document.createElement("td"); 
+            const ec = document.createTextNode(typeof game.eco === "undefined" ? "" : game.eco); 
+
+            const tdct = document.createElement("td"); const ct = document.createTextNode(game.ct);
+            tdev.appendChild(ev); tdcnt.appendChild(cnt);
+            tdwp.appendChild(wp); tdbp.appendChild(bp); tdwe.appendChild(we); 
+            tdbe.appendChild(be); tdrt.appendChild(rt); tdbt.appendChild(bt);
+            tdct.appendChild(ct); tdec.appendChild(ec);
+            tr.id = "gametrid" + p;
+            tr.appendChild(tdbt); tr.appendChild(tdcnt); tr.appendChild(tdct); 
+            tr.appendChild(tdwp); tr.appendChild(tdwe); 
+            tr.appendChild(tdbp); tr.appendChild(tdbe); tr.appendChild(tdrt);
+            tr.appendChild(tdec); tr.appendChild(tdev); tr.appendChild(tdct); 
+            tr.className = "chesstr";
+            tdcnt.className = "chesstdb"; tdev.className = "chesstde";  tdec.className = "chesstce";
+            tdwp.className = "chesstdp"; tdbp.className = "chesstdp"; tdwe.className = "chesstdl";
+            tdbe.className = "chesstdl"; tdrt.className = "chesstdr";  tdbt.className = "chesstdb";
+            tdct.className = "chesstdb";
+            tbody.appendChild(tr);
+
+            bt.innerHTML = "&#8594;";
+            bt.onclick = proceedPlay;
+            bt.value = p;
+            bt.id = "gameid" + p;
+
+            if (p == '0') {
+              tr.className = "chesstr chesstrcurrent";
+              tr.scrollIntoView();
+              PLAYBUTTON = bt;
+            }
+           }
+        }
+        var current_ = document.getElementById("currentgameid");
+        var repeatbt = document.getElementById("repeatid");
+        current_.innerHTML = '1. ';
+        repeatbt.value = "&#9654;"; repeatbt.innerHTML = "&#9654;";
+        const totalid = document.getElementById("totalid"); totalid.innerHTML = game_cnt;
+        MOVETRACKER_ = null; CURRENTCOLOR_ = null; LOADPGN_ = false; INTERRUPT = false;
+        REPEATPLAY_ = false; REPEATWHERE_ = null; REPEATBUTTON_ = null; 
+        chess_awalker.pause(); chess_awalker.currentTime = 0
+        initializePlay(0);
+   }
+
+   var pgn_interval = 0;
+   function readyPGN(pgn_) {
+     if (pgn_interval > 20) { pgn_interval = 0; clearInterval(pgntime); fetchPGN(pgn_); return  }
+     pgn_interval ++;
+     if (LOADPGN_ == false) {
+          pgn_interval = 0;
+          clearInterval(pgntime);
+          LOADPGN_ = false;
+          fetchPGN(pgn_);
+     }
+   }
+
+   var pgntime = null , LOADPGN_ = false;
+   async function loadPGN(pgn_){
+        INTERRUPT = true; LOADPGN_ = true;
+        pgntime = setInterval(readyPGN, 50, pgn_);
+   }
+
+   log("Render Board ...");
+   reloadBoard();
+   log(Board);
+   log("Expand");
+   expandBoard(); 
+   log("Load Parser ...");
+   loadParser();
+   log("Load ECO ...");
+   loadECO();
+   log("Load Stockfish ...");
+   loadStockfish();
+   log("Enable Key Event Capture ...");
+   keyPress();
+</script>
+</body>
+</html>

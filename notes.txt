@@ -1,0 +1,4 @@
+set PATH to <nodejs>/bin
+cd <workspace>
+npm init -y
+npm install --save express 

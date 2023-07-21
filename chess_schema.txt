@@ -1,0 +1,177 @@
+/*** connections 
+$ . ./web.sh
+$ runpsql.sh
+Server [localhost]:   <just hit enter>
+Database [postgres]:  <just hit enter>
+Port [5432]:          <just hit enter>
+Username [postgres]:  <just hit enter>
+Password for user postgres: <enter welcome1>
+****/
+
+create schema chessdb;
+create table  chessdb.players(
+      player_id int not null, 
+      username varchar(60) not null unique, 
+      password varchar(12) not null, 
+      firstname varchar(60) not null, 
+      lastname varchar(60) not null,  
+      email_address varchar(120) not null unique, 
+      phone varchar(20) unique, 
+      registered_date timestamp without time zone, 
+      member_status smallint, 
+      fide_title smallint,
+      fide_rating smallint,  
+      country smallint,
+      profile text,
+      district varchar(15), 
+      city varchar(15), 
+      primary key(player_id)
+    );
+create sequence chessdb.player_seq as int minvalue 654321 maxvalue 2147483647 start with 654321 owned by chessdb.players.player_id;
+
+create table chessdb.ratings(
+     player_id int not null,
+     variant smallint not null, /* 1 - standard, 2 - c960, 3 - crazyhouse, 4 - top of the hill, 5 - three checks, 6 - atomic, 7 - horde, 8 - antichess */
+     timer_type smallint not null, /* 1 - classical, 2 - bullet, 3 - blitz, 4 - rapid */
+     elo smallint,
+     glicko smallint,
+     glicko_d real,
+     glicko_v real,
+     rmoo smallint, /* our rate - average elo and glicko - experimental */
+     unique (player_id, variant, timer_type),
+     constraint fk_rplayer 
+         foreign key(player_id)
+           references chessdb.players(player_id)
+    );
+
+create table chessdb.tournaments(
+     tournament_id int not null unique,
+     host_id int not null,
+     tournament_name varchar(256) not null,
+     tournament_type smallint not null,
+     duration smallint not null,
+     number_players smallint not null,
+     variant smallint not null,
+     timer smallint not null,
+     increment smallint not null,
+     rated BOOLEAN,
+     titled BOOLEAN,
+     start_date timestamp without time zone,
+     end_date timestamp without time zone,
+     recurrence smallint,
+     forfeit_policy smallint DEFAULT 1, /* default is 1 minute */
+     description text,
+     status smallint not null,   /* 0 - open, 1 - started, 2 - cancelled, 3 - ended */
+     currentround smallint not null,
+     final_attendance smallint not null,
+     primary key(tournament_id),
+     unique (tournament_name, host_id),
+     unique (host_id, start_date), /** you cannot host multiple tournament at the same time **/
+     constraint fk_tournhost_id
+         foreign key(host_id)
+           references chessdb.players(player_id)
+);
+create sequence chessdb.tournament_seq as int minvalue 1 maxvalue 2147483647 start with 1 owned by chessdb.tournaments.tournament_id;
+
+
+create table chessdb.tournament_registration(
+     tournament_id int not null,
+     player_id int not null,
+     joined timestamp without time zone,
+     updated timestamp without time zone,
+     status smallint not null, /* 1 - joined, 2 - waitlisted, 3 - playing, 4 - forfeited, 5 - withdraw, 6 - disqualified, 7 - completed */
+     reason text,
+     unique (tournament_id, player_id),
+     constraint fk_tourn_wplayer
+         foreign key(player_id)
+           references chessdb.players(player_id),
+     constraint fk_tournament_players
+         foreign key(tournament_id)
+           references chessdb.tournaments(tournament_id)
+);
+
+create table chessdb.tournament_pairing( /* preserve game in case of issues */
+     tournament_id int not null,
+     round smallint not null,
+     wplayer_id int not null,
+     bplayer_id int not null,
+     fen text, /* in case variant is chess960 */
+     result varchar(7),
+     wforfeit timestamp without time zone,
+     bforfeit timestamp without time zone,
+     moves text,
+     elapsed text,
+     unique (tournament_id, round, wplayer_id, bplayer_id),
+     constraint fk_tournament_pairing
+         foreign key(tournament_id)
+           references chessdb.tournaments(tournament_id)
+
+);
+
+/* 1 - standard, 2 - chess960, 3 - crazyhouse, 4 - top of the hill, 5 - three checks, 6 - atomic, 7 - horde, 8 - antichess*/
+create table chessdb.games(
+      game_id int not null,
+      tournament_id int,
+      variant smallint not null,
+      fen text, /* in case variant is chess960 */
+      game_type smallint not null, /* 1 - bullet, 2 - blitz, 3 - rapid, 4 - classical */
+      white_id int not null,
+      black_id int not null,
+      welo smallint,  
+      wglicko smallint,  
+      wglicko_d real,  
+      wglicko_v real,  
+      wrmoo smallint,  
+      belo smallint,  
+      bglicko smallint,  
+      bglicko_d real,  
+      bglicko_v real,  
+      brmoo smallint,  
+      round smallint,  
+      event varchar(100),
+      evt_location varchar(40),
+      evt_district varchar(15),
+      evt_city varchar(15), 
+      evt_country varchar(16), 
+      eco varchar(4),
+      result varchar(7),
+      result_reason varchar(30),
+      date_played timestamp without time zone,
+      moves text,
+      elapsed text,  /* thinktime */
+      primary key(game_id),
+      constraint fk_wplayer 
+         foreign key(white_id)
+           references chessdb.players(player_id),
+      constraint fk_bplayer 
+         foreign key(black_id)
+           references chessdb.players(player_id),
+      constraint fk_tournament 
+         foreign key(tournament_id)
+           references chessdb.tournaments(tournament_id)
+    );
+create sequence chessdb.game_seq as int minvalue 1 maxvalue 2147483647 start with 1 owned by chessdb.games.game_id;
+
+create table chessdb.profiles(
+     profile_id int not null unique,
+     config text,
+     imagefile varchar(100),
+     filename varchar(126), 
+     mimetype varchar(30), 
+     filesize int,
+     image bytea,
+     constraint fk_profile_id 
+         foreign key(profile_id)
+           references chessdb.players(player_id)
+);
+
+
+drop sequence chessdb.game_seq;
+drop sequence chessdb.tournament_seq;
+drop sequence chessdb.player_seq;
+drop table chessdb.profiles;
+drop table chessdb.games;
+drop table chessdb.tournaments;
+drop table chessdb.ratings;
+drop table chessdb.players;
+

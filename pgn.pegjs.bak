@@ -1,0 +1,29 @@
+start = '['event' 'strings']'Separator"a"
+
+event = "event"i
+site = "site"i
+Separator = "~"
+
+// stackoverflow solution 33947960
+strings
+  = '"' chars:DoubleStringCharacter* '"' { return chars.join(''); }
+  / "'" chars:SingleStringCharacter* "'" { return chars.join(''); }
+
+DoubleStringCharacter
+  = !('"' / "\\") char:. { return char; }
+  / "\\" sequence:EscapeSequence { return sequence; }
+
+SingleStringCharacter
+  = !("'" / "\\") char:. { return char; }
+  / "\\" sequence:EscapeSequence { return sequence; }
+
+EscapeSequence
+  = "'"
+  / '"'
+  / "\\"
+  / "b"  { return "\b";   }
+  / "f"  { return "\f";   }
+  / "n"  { return "\n";   }
+  / "r"  { return "\r";   }
+  / "t"  { return "\t";   }
+  / "v"  { return "\x0B"; }
